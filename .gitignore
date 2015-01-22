@@ -1,0 +1,10 @@
+*.o
+*.a
+*.so
+*.swp
+bin/
+obj/
+gen/
+libs/
+.settings/
+local.properties
