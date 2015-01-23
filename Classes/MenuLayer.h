@@ -4,7 +4,7 @@
  * @File: MenuLayer.h
  * $Id: MenuLayer.h v 1.0 2015-01-22 12:02:34 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-23 18:25:13 $
+ * $Last modified: 2015-01-23 21:30:50 $
  * @brief
  *
  ******************************************************************/
@@ -19,7 +19,13 @@ class MenuLayer : public CCLayerColor {
 public:
     CREATE_FUNC(MenuLayer);
     virtual bool init();
+    virtual void onEnter();
+    virtual void onExit();
+
     void menuPlayCallback(CCObject* pSender);
+    void menuSettingCallback(CCObject* pSender);
+    void menuHighScoreCallback(CCObject* pSender);
+    void menuRateCallback(CCObject* pSender);
 };
 
 #endif // _MENULAYER_H_
