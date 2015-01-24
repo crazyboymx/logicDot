@@ -26,6 +26,12 @@ public:
     void menuSettingCallback(CCObject* pSender);
     void menuHighScoreCallback(CCObject* pSender);
     void menuRateCallback(CCObject* pSender);
+    
+private:
+    CCMenuItem* mPlay;
+    CCMenuItem* mSetting;
+    CCMenuItem* mHighScore;
+    CCMenuItem* mRate;
 };
 
 #endif // _MENULAYER_H_

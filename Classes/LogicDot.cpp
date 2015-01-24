@@ -9,7 +9,7 @@
  *
  ******************************************************************/
 
-#include <LogicDot.h>
+#include "LogicDot.h"
 #include <ctime>
 #include <cstdio>
 #include <cstdlib>

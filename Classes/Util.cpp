@@ -9,7 +9,8 @@
  *
  ******************************************************************/
 
-#include <Util.h>
+#include "Util.h"
+USING_NS_CC;
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor) {
     CCDrawNode* node = CCDrawNode::create();
