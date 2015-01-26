@@ -4,7 +4,7 @@
  * @File: MenuLayer.cpp
  * $Id: MenuLayer.cpp v 1.0 2015-01-22 12:05:31 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-23 21:31:56 $
+ * $Last modified: 2015-01-26 23:28:57 $
  * @brief
  *
  ******************************************************************/
@@ -18,13 +18,13 @@ float roundRadius = 20;
 CCSize playSize = CCSize(600, 100);
 ccColor4F playNormColor = ccc4f(0.5, 0.5, 0.5, 1.0);
 ccColor4F playSelectedColor = ccc4f(0.3, 0.3, 0.3, 1.0);
-ccColor3B playNormTextColor = ccc3(200, 200, 200);
+ccColor3B playNormTextColor = ccc3(180, 180, 180);
 ccColor3B playSelectedTextColor = ccc3(255, 255, 255);
 
 CCSize menuSize = CCSize(500, 70);
 ccColor4F menuNormColor = ccc4f(0.7, 0.7, 0.7, 1.0);
 ccColor4F menuSelectedColor = ccc4f(0.55, 0.55, 0.55, 1.0);
-ccColor3B menuNormTextColor = ccc3(200, 200, 200);
+ccColor3B menuNormTextColor = ccc3(127, 127, 127);
 ccColor3B menuSelectedTextColor = ccc3(255, 255, 255);
 
 bool MenuLayer::init() {
@@ -37,7 +37,8 @@ bool MenuLayer::init() {
     CCLOG("origin:%0.2f, %0.2f, visibleSize: %0.2f, %0.2f", origin.x, origin.y, visibleSize.width, visibleSize.height);
 
     CCNode* playNorm = createRoundRectNode(playSize.width, playSize.height, roundRadius, playNormColor);
-    CCNode* playSel = createRoundRectNode(playSize.width, playSize.height, roundRadius, playSelectedColor);    CCLabelTTF* playNormLabel = CCLabelTTF::create("Play", "Helvetica", 64, playNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCNode* playSel = createRoundRectNode(playSize.width, playSize.height, roundRadius, playSelectedColor);
+    CCLabelTTF* playNormLabel = CCLabelTTF::create("Play", "Helvetica", 64, playNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     playNormLabel->setAnchorPoint(ccp(0, 0));
     playNormLabel->setFontFillColor(playNormTextColor);
     playNorm->addChild(playNormLabel);
@@ -98,10 +99,12 @@ bool MenuLayer::init() {
 }
 
 void MenuLayer::onEnter() {
+    CCLayerColor::onEnter();
     CCLOG("onEnter");
 }
 
 void MenuLayer::onExit() {
+    CCLayerColor::onExit();
     CCLOG("onExit");
 }
 
