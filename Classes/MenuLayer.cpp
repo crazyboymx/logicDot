@@ -4,13 +4,14 @@
  * @File: MenuLayer.cpp
  * $Id: MenuLayer.cpp v 1.0 2015-01-22 12:05:31 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-26 23:28:57 $
+ * $Last modified: 2015-01-27 10:15:06 $
  * @brief
  *
  ******************************************************************/
 
 #include "Util.h"
 #include "MenuLayer.h"
+#include "StageLayer.h"
 
 USING_NS_CC;
 
@@ -38,11 +39,11 @@ bool MenuLayer::init() {
 
     CCNode* playNorm = createRoundRectNode(playSize.width, playSize.height, roundRadius, playNormColor);
     CCNode* playSel = createRoundRectNode(playSize.width, playSize.height, roundRadius, playSelectedColor);
-    CCLabelTTF* playNormLabel = CCLabelTTF::create("Play", "Helvetica", 64, playNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* playNormLabel = CCLabelTTF::create("Play", fontName, 64, playNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     playNormLabel->setAnchorPoint(ccp(0, 0));
     playNormLabel->setFontFillColor(playNormTextColor);
     playNorm->addChild(playNormLabel);
-    CCLabelTTF* playSelLabel = CCLabelTTF::create("Play", "Helvetica", 64, playSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* playSelLabel = CCLabelTTF::create("Play", fontName, 64, playSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     playSelLabel->setAnchorPoint(ccp(0, 0));
     playSelLabel->setFontFillColor(playSelectedTextColor);
     playSel->addChild(playSelLabel);
@@ -52,11 +53,11 @@ bool MenuLayer::init() {
 
     CCNode* settingNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
     CCNode* settingSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
-    CCLabelTTF* settingNormLabel = CCLabelTTF::create("Setting", "Helvetica", 48, settingNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* settingNormLabel = CCLabelTTF::create("Setting", fontName, 48, settingNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     settingNormLabel->setAnchorPoint(ccp(0, 0));
     settingNormLabel->setFontFillColor(menuNormTextColor);
     settingNorm->addChild(settingNormLabel);
-    CCLabelTTF* settingSelLabel = CCLabelTTF::create("Setting", "Helvetica", 48, settingSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* settingSelLabel = CCLabelTTF::create("Setting", fontName, 48, settingSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     settingSelLabel->setAnchorPoint(ccp(0, 0));
     settingSelLabel->setFontFillColor(menuSelectedTextColor);
     settingSel->addChild(settingSelLabel);
@@ -66,11 +67,11 @@ bool MenuLayer::init() {
 
     CCNode* highScoreNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
     CCNode* highScoreSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
-    CCLabelTTF* highScoreNormLabel = CCLabelTTF::create("High Score", "Helvetica", 52, highScoreNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* highScoreNormLabel = CCLabelTTF::create("High Score", fontName, 52, highScoreNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     highScoreNormLabel->setAnchorPoint(ccp(0, 0));
     highScoreNormLabel->setFontFillColor(menuNormTextColor);
     highScoreNorm->addChild(highScoreNormLabel);
-    CCLabelTTF* highScoreSelLabel = CCLabelTTF::create("High Score", "Helvetica", 52, highScoreSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* highScoreSelLabel = CCLabelTTF::create("High Score", fontName, 52, highScoreSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     highScoreSelLabel->setAnchorPoint(ccp(0, 0));
     highScoreSelLabel->setFontFillColor(menuSelectedTextColor);
     highScoreSel->addChild(highScoreSelLabel);
@@ -80,11 +81,11 @@ bool MenuLayer::init() {
 
     CCNode* rateNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
     CCNode* rateSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
-    CCLabelTTF* rateNormLabel = CCLabelTTF::create("Rate Me", "Helvetica", 48, rateNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* rateNormLabel = CCLabelTTF::create("Rate Me", fontName, 48, rateNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     rateNormLabel->setAnchorPoint(ccp(0, 0));
     rateNormLabel->setFontFillColor(menuNormTextColor);
     rateNorm->addChild(rateNormLabel);
-    CCLabelTTF* rateSelLabel = CCLabelTTF::create("Rate Me", "Helvetica", 48, rateSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    CCLabelTTF* rateSelLabel = CCLabelTTF::create("Rate Me", fontName, 48, rateSel->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     rateSelLabel->setAnchorPoint(ccp(0, 0));
     rateSelLabel->setFontFillColor(menuSelectedTextColor);
     rateSel->addChild(rateSelLabel);
@@ -110,6 +111,10 @@ void MenuLayer::onExit() {
 
 void MenuLayer::menuPlayCallback(CCObject* pSender) {
     CCLOG("menuPlayCallback");
+    StageLayer* sl = StageLayer::create();
+    StageConfig config = {30, Red, "5X5 Packer"};
+    sl->initWithConfig(config);
+    CCDirector::sharedDirector()->getRunningScene()->addChild(sl);
 }
 
 void MenuLayer::menuSettingCallback(CCObject* pSender) {
