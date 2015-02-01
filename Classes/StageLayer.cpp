@@ -26,7 +26,9 @@ bool StageLayer::init() {
         return false;
     }
 
+    this->setTouchEnabled(true);
     mLevelNodeList = NULL;
+    return true;
 }
 
 void StageLayer::onEnter() {
@@ -57,7 +59,7 @@ void StageLayer::initWithConfig(const StageConfig& config) {
     CCNode* menuNorm = createRoundRectNode(visibleSize.width - 20, 100, 20, mConfig.cs.normal);
     CCNode* menuSel = createRoundRectNode(visibleSize.width - 20, 100, 20, mConfig.cs.dark);
     CCLabelTTF* menuLabel = CCLabelTTF::create("Menu", fontName, 52, menuNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
-    menuLabel->setAnchorPoint(ccp(0.5, 0));
+    menuLabel->setAnchorPoint(ccp(0, 0));
     menuLabel->setFontFillColor(fontColor);
     CCMenuItem* menuItem = CCMenuItemSprite::create(menuNorm, menuSel, NULL, this, menu_selector(StageLayer::menuMenuCallback));
     menuItem->addChild(menuLabel);

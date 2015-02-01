@@ -16,9 +16,13 @@ const char* fontName = "Helvetica";
 
 ccColor3B fontColor = ccc3(255, 255, 255);
 
-ColorSpace Red      = {ccc4f(0.4, 0.0, 0.0, 1.0),  ccc4f(0.7 ,0.0, 0.0, 1.0), ccc4f(1.0, 0.0, 0.0, 1.0)};
-ColorSpace Yellow   = {ccc4f(0.4, 0.0, 0.0, 1.0),  ccc4f(0.7 ,0.0, 0.0, 1.0), ccc4f(1.0, 0.0, 0.0, 1.0)};
-ColorSpace Blue     = {ccc4f(0.4, 0.0, 0.0, 1.0),  ccc4f(0.7 ,0.0, 0.0, 1.0), ccc4f(1.0, 0.0, 0.0, 1.0)};
+ColorSpace Red      = {
+    ccc4f(0.4, 0.0, 0.0, 1.0),
+    ccc4f(0.7 ,0.0, 0.0, 1.0),
+    ccc4f(1.0, 0.0, 0.0, 1.0),
+    ccc4f(1.0, 1.0, 1.0, 1.0),
+    ccc4f(0.5, 0.5, 0.5, 1.0),
+};
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor) {
     CCDrawNode* node = CCDrawNode::create();

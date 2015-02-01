@@ -39,12 +39,19 @@ char getStatusChar(Status status) {
     case EMPTY: return 'e';
     case DOT: return 'd'; break;
     case HINT_EMPTY: return ' '; break;
+    case DOT_ALONE:
     case HINT_DOT_ALONE: return '.'; break;
+    case DOT_UP:
     case HINT_DOT_UP: return '^'; break;
+    case DOT_LEFT:
     case HINT_DOT_LEFT: return '<'; break;
+    case DOT_RIGHT:
     case HINT_DOT_RIGHT: return '>'; break;
+    case DOT_DOWN:
     case HINT_DOT_DOWN: return 'v'; break;
+    case DOT_UP_DOWN:
     case HINT_DOT_UP_DOWN: return '|'; break;
+    case DOT_LEFT_RIGHT:
     case HINT_DOT_LEFT_RIGHT: return '-'; break;
     default: return 'z'; break;
     }

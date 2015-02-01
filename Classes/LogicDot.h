@@ -28,6 +28,13 @@ enum Status {
     UNKNOWN = 0,
     EMPTY,
     DOT,
+    DOT_ALONE,
+    DOT_LEFT,
+    DOT_UP,
+    DOT_RIGHT,
+    DOT_DOWN,
+    DOT_LEFT_RIGHT,
+    DOT_UP_DOWN,
     HINT_EMPTY,
     HINT_DOT_ALONE,
     HINT_DOT_LEFT,
@@ -36,6 +43,7 @@ enum Status {
     HINT_DOT_DOWN,
     HINT_DOT_LEFT_RIGHT,
     HINT_DOT_UP_DOWN,
+    MAX_STATUS,
 };
 
 struct Cell {

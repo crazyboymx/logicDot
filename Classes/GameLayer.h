@@ -9,3 +9,30 @@
  *
  ******************************************************************/
 
+#ifndef _GAMELAYER_H_
+#define _GAMELAYER_H_
+
+#include <cocos2d.h>
+#include <string>
+#include "LogicDot.h"
+#include "Util.h"
+
+struct GameConfig {
+    std::string puzzle;
+};
+
+class GameLayer : public CCLayerColor {
+public:
+    CREATE_FUNC(GameLayer);
+    ~GameLayer();
+    virtual bool init();
+    virtual void onEnter();
+    virtual void onExit();
+    
+    void initWithConfig(const GameConfig& config);
+private:
+    GameConfig mConfig;
+    Puzzle* mPuzzle;
+};
+
+#endif // _GAMELAYER_H_

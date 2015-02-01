@@ -20,6 +20,8 @@ struct ColorSpace {
     ccColor4F light;
     ccColor4F normal;
     ccColor4F dark;
+    ccColor4F dotBg;
+    ccColor4F dotHint;
 };
 
 extern const char* fontName;

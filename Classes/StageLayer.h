@@ -23,6 +23,12 @@ struct StageConfig {
     int levelCount;
     ColorSpace cs;
     std::string title;
+    StageConfig& operator=(const StageConfig& conf) {
+        this->levelCount = conf.levelCount;
+        this->cs = conf.cs;
+        this->title = conf.title;
+        return *this;
+    }
 };
 
 class StageLayer : public CCLayerColor {

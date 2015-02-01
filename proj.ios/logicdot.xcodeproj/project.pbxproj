@@ -232,6 +232,10 @@
 		4B1AF06E1A73287100714F07 /* LogicDot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B1AF0681A73287100714F07 /* LogicDot.cpp */; };
 		4B1AF06F1A73287100714F07 /* MenuLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B1AF06A1A73287100714F07 /* MenuLayer.cpp */; };
 		4B1AF0701A73287100714F07 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4B1AF06C1A73287100714F07 /* Util.cpp */; };
+		4BA31DD11A7DFE2900609C57 /* GameLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DCB1A7DFE2900609C57 /* GameLayer.cpp */; };
+		4BA31DD21A7DFE2900609C57 /* LevelNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DCD1A7DFE2900609C57 /* LevelNode.cpp */; };
+		4BA31DD31A7DFE2900609C57 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DCF1A7DFE2900609C57 /* StageLayer.cpp */; };
+		4BA31DF21A7E238100609C57 /* DotNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DF01A7E238100609C57 /* DotNode.cpp */; };
 		7855E0E1153FEF240059DD9A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7855E0DF153FEF240059DD9A /* Default.png */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712461292920000B8313A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB212928DE900B8313A /* libxml2.dylib */; };
@@ -729,6 +733,14 @@
 		4B1AF06B1A73287100714F07 /* MenuLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuLayer.h; path = ../Classes/MenuLayer.h; sourceTree = "<group>"; };
 		4B1AF06C1A73287100714F07 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Util.cpp; path = ../Classes/Util.cpp; sourceTree = "<group>"; };
 		4B1AF06D1A73287100714F07 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Util.h; path = ../Classes/Util.h; sourceTree = "<group>"; };
+		4BA31DCB1A7DFE2900609C57 /* GameLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GameLayer.cpp; path = ../Classes/GameLayer.cpp; sourceTree = "<group>"; };
+		4BA31DCC1A7DFE2900609C57 /* GameLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameLayer.h; path = ../Classes/GameLayer.h; sourceTree = "<group>"; };
+		4BA31DCD1A7DFE2900609C57 /* LevelNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LevelNode.cpp; path = ../Classes/LevelNode.cpp; sourceTree = "<group>"; };
+		4BA31DCE1A7DFE2900609C57 /* LevelNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LevelNode.h; path = ../Classes/LevelNode.h; sourceTree = "<group>"; };
+		4BA31DCF1A7DFE2900609C57 /* StageLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StageLayer.cpp; path = ../Classes/StageLayer.cpp; sourceTree = "<group>"; };
+		4BA31DD01A7DFE2900609C57 /* StageLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StageLayer.h; path = ../Classes/StageLayer.h; sourceTree = "<group>"; };
+		4BA31DF01A7E238100609C57 /* DotNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DotNode.cpp; path = ../Classes/DotNode.cpp; sourceTree = "<group>"; };
+		4BA31DF11A7E238100609C57 /* DotNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DotNode.h; path = ../Classes/DotNode.h; sourceTree = "<group>"; };
 		7855E0DF153FEF240059DD9A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = SOURCE_ROOT; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB212928DE900B8313A /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
@@ -1264,6 +1276,14 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				4BA31DF01A7E238100609C57 /* DotNode.cpp */,
+				4BA31DF11A7E238100609C57 /* DotNode.h */,
+				4BA31DCB1A7DFE2900609C57 /* GameLayer.cpp */,
+				4BA31DCC1A7DFE2900609C57 /* GameLayer.h */,
+				4BA31DCD1A7DFE2900609C57 /* LevelNode.cpp */,
+				4BA31DCE1A7DFE2900609C57 /* LevelNode.h */,
+				4BA31DCF1A7DFE2900609C57 /* StageLayer.cpp */,
+				4BA31DD01A7DFE2900609C57 /* StageLayer.h */,
 				4B1AF0681A73287100714F07 /* LogicDot.cpp */,
 				4B1AF0691A73287100714F07 /* LogicDot.h */,
 				4B1AF06A1A73287100714F07 /* MenuLayer.cpp */,
@@ -1898,8 +1918,10 @@
 				15A3DA311682F826002FB0C5 /* CCBAnimationManager.cpp in Sources */,
 				15A3DA321682F826002FB0C5 /* CCBFileLoader.cpp in Sources */,
 				15A3DA331682F826002FB0C5 /* CCBKeyframe.cpp in Sources */,
+				4BA31DD11A7DFE2900609C57 /* GameLayer.cpp in Sources */,
 				15A3DA341682F826002FB0C5 /* CCBReader.cpp in Sources */,
 				15A3DA351682F826002FB0C5 /* CCBSequence.cpp in Sources */,
+				4BA31DD21A7DFE2900609C57 /* LevelNode.cpp in Sources */,
 				15A3DA361682F826002FB0C5 /* CCBSequenceProperty.cpp in Sources */,
 				15A3DA371682F826002FB0C5 /* CCBValue.cpp in Sources */,
 				15A3DA381682F826002FB0C5 /* CCControlButtonLoader.cpp in Sources */,
@@ -1937,6 +1959,7 @@
 				15A3DA5A1682F826002FB0C5 /* CCSorting.cpp in Sources */,
 				15A3DA5B1682F826002FB0C5 /* CCTableView.cpp in Sources */,
 				15A3DA5C1682F826002FB0C5 /* CCTableViewCell.cpp in Sources */,
+				4BA31DD31A7DFE2900609C57 /* StageLayer.cpp in Sources */,
 				15A3DA5D1682F826002FB0C5 /* HttpClient.cpp in Sources */,
 				15A3DA5E1682F826002FB0C5 /* CCPhysicsDebugNode.cpp in Sources */,
 				15A3DA5F1682F826002FB0C5 /* CCPhysicsSprite.cpp in Sources */,
@@ -1999,6 +2022,7 @@
 				379BB9AB17F03F3700829B88 /* CCTweenFunction.cpp in Sources */,
 				379BB9AC17F03F3700829B88 /* CCUtilMath.cpp in Sources */,
 				379BB9AD17F03F3700829B88 /* CCComAttribute.cpp in Sources */,
+				4BA31DF21A7E238100609C57 /* DotNode.cpp in Sources */,
 				379BB9AE17F03F3700829B88 /* CCComAudio.cpp in Sources */,
 				379BB9AF17F03F3700829B88 /* CCComController.cpp in Sources */,
 				379BB9B017F03F3700829B88 /* CCComRender.cpp in Sources */,
@@ -2084,7 +2108,7 @@
 					"\"$(SRCROOT)/../../cocos2d-x/cocos2dx/platform/ios/Simulation\"",
 				);
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 					"\"$(SRCROOT)/../../cocos2d-x/external/libwebsockets/ios/lib\"",
@@ -2096,7 +2120,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Classes";
-				VALID_ARCHS = "armv6 armv7 i386";
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Debug;
 		};
@@ -2132,7 +2156,7 @@
 					"\"$(SRCROOT)/../../cocos2d-x/cocos2dx/platform/ios/Simulation\"",
 				);
 				INFOPLIST_FILE = Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 					"\"$(SRCROOT)/../../cocos2d-x/external/libwebsockets/ios/lib\"",
@@ -2144,6 +2168,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../Classes";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv6 armv7";
 			};
 			name = Release;
 		};
