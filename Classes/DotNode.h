@@ -4,7 +4,7 @@
  * @File: DotNode.h
  * $Id: DotNode.h v 1.0 2015-01-27 09:43:20 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-27 10:00:39 $
+ * $Last modified: 2015-02-02 11:29:15 $
  * @brief
  *
  ******************************************************************/

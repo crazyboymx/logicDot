@@ -4,7 +4,7 @@
  * @File: MenuLayer.cpp
  * $Id: MenuLayer.cpp v 1.0 2015-01-22 12:05:31 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-27 10:15:06 $
+ * $Last modified: 2015-02-03 10:47:00 $
  * @brief
  *
  ******************************************************************/
@@ -15,14 +15,13 @@
 
 USING_NS_CC;
 
-float roundRadius = 20;
-CCSize playSize = CCSize(600, 100);
+CCSize playSize;
 ccColor4F playNormColor = ccc4f(0.5, 0.5, 0.5, 1.0);
 ccColor4F playSelectedColor = ccc4f(0.3, 0.3, 0.3, 1.0);
 ccColor3B playNormTextColor = ccc3(180, 180, 180);
 ccColor3B playSelectedTextColor = ccc3(255, 255, 255);
 
-CCSize menuSize = CCSize(500, 70);
+CCSize menuSize;
 ccColor4F menuNormColor = ccc4f(0.7, 0.7, 0.7, 1.0);
 ccColor4F menuSelectedColor = ccc4f(0.55, 0.55, 0.55, 1.0);
 ccColor3B menuNormTextColor = ccc3(127, 127, 127);
@@ -33,12 +32,12 @@ bool MenuLayer::init() {
         return false;
     }
 
-    CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
-    CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
-    CCLOG("origin:%0.2f, %0.2f, visibleSize: %0.2f, %0.2f", origin.x, origin.y, visibleSize.width, visibleSize.height);
+    CCSize winSize = screenSize();
+    playSize = CCSize(winSize.width - 40, 100);
+    menuSize = CCSize(winSize.width - 140, 70);
 
-    CCNode* playNorm = createRoundRectNode(playSize.width, playSize.height, roundRadius, playNormColor);
-    CCNode* playSel = createRoundRectNode(playSize.width, playSize.height, roundRadius, playSelectedColor);
+    CCNode* playNorm = createRoundRectNode(playSize.width, playSize.height, LargeRadius, playNormColor);
+    CCNode* playSel = createRoundRectNode(playSize.width, playSize.height, LargeRadius, playSelectedColor);
     CCLabelTTF* playNormLabel = CCLabelTTF::create("Play", fontName, 64, playNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     playNormLabel->setAnchorPoint(ccp(0, 0));
     playNormLabel->setFontFillColor(playNormTextColor);
@@ -51,8 +50,8 @@ bool MenuLayer::init() {
     mPlay->setAnchorPoint(ccp(0.5, 0));
     mPlay->setPosition(ccp(0, 300));
 
-    CCNode* settingNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
-    CCNode* settingSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
+    CCNode* settingNorm = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuNormColor);
+    CCNode* settingSel = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuSelectedColor);
     CCLabelTTF* settingNormLabel = CCLabelTTF::create("Setting", fontName, 48, settingNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     settingNormLabel->setAnchorPoint(ccp(0, 0));
     settingNormLabel->setFontFillColor(menuNormTextColor);
@@ -65,8 +64,8 @@ bool MenuLayer::init() {
     mSetting->setAnchorPoint(ccp(0.5, 0));
     mSetting->setPosition(ccp(0, 200));
 
-    CCNode* highScoreNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
-    CCNode* highScoreSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
+    CCNode* highScoreNorm = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuNormColor);
+    CCNode* highScoreSel = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuSelectedColor);
     CCLabelTTF* highScoreNormLabel = CCLabelTTF::create("High Score", fontName, 52, highScoreNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     highScoreNormLabel->setAnchorPoint(ccp(0, 0));
     highScoreNormLabel->setFontFillColor(menuNormTextColor);
@@ -79,8 +78,8 @@ bool MenuLayer::init() {
     mHighScore->setAnchorPoint(ccp(0.5, 0));
     mHighScore->setPosition(ccp(0, 100));
 
-    CCNode* rateNorm = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuNormColor);
-    CCNode* rateSel = createRoundRectNode(menuSize.width, menuSize.height, roundRadius, menuSelectedColor);
+    CCNode* rateNorm = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuNormColor);
+    CCNode* rateSel = createRoundRectNode(menuSize.width, menuSize.height, LargeRadius, menuSelectedColor);
     CCLabelTTF* rateNormLabel = CCLabelTTF::create("Rate Me", fontName, 48, rateNorm->getContentSize(), kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
     rateNormLabel->setAnchorPoint(ccp(0, 0));
     rateNormLabel->setFontFillColor(menuNormTextColor);
@@ -94,7 +93,7 @@ bool MenuLayer::init() {
     mRate->setPosition(ccp(0, 0));
 
     CCMenu* pMenu = CCMenu::create(mPlay, mSetting, mHighScore, mRate, NULL);
-    pMenu->setPosition(ccp(visibleSize.width / 2, 260));
+    pMenu->setPosition(ccp(winSize.width / 2, 260));
     this->addChild(pMenu);
     return true;
 }
@@ -114,7 +113,7 @@ void MenuLayer::menuPlayCallback(CCObject* pSender) {
     StageLayer* sl = StageLayer::create();
     StageConfig config = {30, Red, "5X5 Packer"};
     sl->initWithConfig(config);
-    CCDirector::sharedDirector()->getRunningScene()->addChild(sl);
+    this->addChild(sl);
 }
 
 void MenuLayer::menuSettingCallback(CCObject* pSender) {
