@@ -34,6 +34,8 @@ public:
     virtual void ccTouchMoved(CCTouch* touch, CCEvent* event);
     virtual void ccTouchEnded(CCTouch* touch, CCEvent* event);
 
+    void touchOnBoard(int row, int col);
+    void doubleTouchOnBoard(int row, int col);
     void updateLabels();
 
     void initWithConfig(const GameConfig& config, const ColorSpace& cs);
@@ -55,6 +57,10 @@ private:
     std::vector<DotNode*> mDotNodeList;
     CCLabelTTF* mRowLabelList[20];
     CCLabelTTF* mColLabelList[20];
+
+    Status mStatusInDrag;
+    long mLastTouchTime;
+    int mLastTouchIndex;
 };
 
 #endif // _GAMELAYER_H_

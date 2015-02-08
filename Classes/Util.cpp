@@ -26,11 +26,11 @@ const int MiddleRadius = 15;
 const int LargeRadius = 20;
 
 ColorSpace Red = {
+    ccc4f(1.0, 1.0, 1.0, 1.0),
     ccc4f(0.7, 0.0, 0.0, 0.5),
     ccc4f(0.7 ,0.0, 0.0, 1.0),
     ccc4f(1.0, 0.0, 0.0, 1.0),
-    ccc4f(1.0, 1.0, 1.0, 1.0),
-    ccc4f(0.6, 0.6, 0.6, 1.0),
+    ccc4f(0.6, 0.6, 0.6, 0.5),
     ccc4f(0.8, 0.8, 0.8, 1.0),
     ccc3(255, 0, 0),
 };

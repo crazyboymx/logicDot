@@ -14,6 +14,15 @@
 #include <string>
 #include <vector>
 
+#define LEFT        0X00010000
+#define UP          0X00020000
+#define RIGHT       0X00040000
+#define DOWN        0X00080000
+#define HINT_LEFT   0X00100000
+#define HINT_UP     0X00200000
+#define HINT_RIGHT  0X00400000
+#define HINT_DOWN   0X00800000
+
 struct Point {
     int x;
     int y;
@@ -28,32 +37,23 @@ enum Status {
     UNKNOWN = 0,
     EMPTY,
     DOT,
-    DOT_ALONE,
-    DOT_LEFT,
-    DOT_UP,
-    DOT_RIGHT,
-    DOT_DOWN,
-    DOT_LEFT_RIGHT,
-    DOT_UP_DOWN,
     HINT_EMPTY,
-    HINT_DOT_ALONE,
-    HINT_DOT_LEFT,
-    HINT_DOT_UP,
-    HINT_DOT_RIGHT,
-    HINT_DOT_DOWN,
-    HINT_DOT_LEFT_RIGHT,
-    HINT_DOT_UP_DOWN,
-    MAX_STATUS,
+    HINT_DOT,
 };
 
 inline bool isDot(Status status) {
-    return status != UNKNOWN && status != EMPTY && status != HINT_EMPTY && status != MAX_STATUS;
+    return status == DOT || status == HINT_DOT;
+}
+
+inline bool isHint(Status status) {
+    return status == HINT_EMPTY || status == HINT_DOT;
 }
 
 struct Cell {
     Point pos;
     Status status;
     Status hint;
+    int flag;
     Cell(int row, int column) {
         pos.x = row;
         pos.y = column;
@@ -63,6 +63,7 @@ struct Cell {
     void reset() {
         status = UNKNOWN;
         hint = UNKNOWN;
+        flag = 0;
     }
 };
 
@@ -123,8 +124,8 @@ protected:
     Puzzle& operator=(const Puzzle&);
 
     void init();
-    static bool putDotToCell(Puzzle& p, int row, int col);
-    static void fillHint(Puzzle& p);
+    bool putDotToHint(int row, int col);
+    void fillHint();
 };
 
 #endif // _LOGICDOT_H_

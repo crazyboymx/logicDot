@@ -15,14 +15,20 @@
 #include <cocos2d.h>
 #include <string>
 #include <sstream>
+#include <time.h>
 
 USING_NS_CC;
 
+// 双击时间间隔，单位毫秒
+#define DOUBLE_CLICK_THRESHOLD 500
+// 两个grid之间的间隔
+#define GRID_GAP    5
+
 struct ColorSpace {
+    ccColor4F bg;           // back ground color
     ccColor4F light;        // main color: light
     ccColor4F normal;       // main color: normal
     ccColor4F dark;         // main color: dark
-    ccColor4F dotBg;        // dot background color
     ccColor4F hint;         // hint status color
     ccColor4F hintLight;    // hint status color
     ccColor3B fontColor;    // font color
@@ -63,6 +69,13 @@ inline CCSize screenSize() {
 }
 
 inline CCPoint center() {
+    return ccp(screenSize().width / 2, screenSize().height / 2);
+}
+
+inline long currentTime() {
+    struct timeval tv;
+    gettimeofday(&tv,NULL);
+    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
 }
 
 #endif // _UTIL_H_
