@@ -14,6 +14,7 @@
 
 #include <cocos2d.h>
 #include <string>
+#include <vector>
 #include "LogicDot.h"
 #include "DotNode.h"
 #include "Util.h"
@@ -33,10 +34,12 @@ public:
     virtual void ccTouchMoved(CCTouch* touch, CCEvent* event);
     virtual void ccTouchEnded(CCTouch* touch, CCEvent* event);
 
+    void updateLabels();
 
     void initWithConfig(const GameConfig& config, const ColorSpace& cs);
     void initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs);
     void registerWithTouchDispatcher();
+
 private:
     void initDotNodes();
     int inline index(int row, int col) {
@@ -48,7 +51,10 @@ private:
 
     ColorSpace mCs;
     Puzzle* mPuzzle;
-    DotNode** mDotNodeList;
+    CCNode* mBoard;
+    std::vector<DotNode*> mDotNodeList;
+    CCLabelTTF* mRowLabelList[20];
+    CCLabelTTF* mColLabelList[20];
 };
 
 #endif // _GAMELAYER_H_

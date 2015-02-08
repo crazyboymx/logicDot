@@ -124,6 +124,23 @@ void Puzzle::clear() {
     }
 }
 
+void Puzzle::setStatus(int row, int col, Status status) {
+    Status oldStatus = cells[row][col].status;
+    if (oldStatus == status) {
+        return;
+    }
+    cells[row][col].status = status;
+    if (isDot(oldStatus) && !isDot(status)) {
+        this->row[row]++;
+        this->column[col]++;
+    }
+    else if (!isDot(oldStatus) && isDot(status)) {
+        this->row[row]--;
+        this->column[col]--;
+    }
+    
+}
+
 std::string Puzzle::toString() {
     std::stringstream ss;
     ss << size.width << ',';

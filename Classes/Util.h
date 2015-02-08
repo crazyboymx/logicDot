@@ -13,6 +13,8 @@
 #define _UTIL_H_
 
 #include <cocos2d.h>
+#include <string>
+#include <sstream>
 
 USING_NS_CC;
 
@@ -23,6 +25,7 @@ struct ColorSpace {
     ccColor4F dotBg;        // dot background color
     ccColor4F hint;         // hint status color
     ccColor4F hintLight;    // hint status color
+    ccColor3B fontColor;    // font color
 };
 
 extern const int kTouchPriorityLayer;
@@ -45,6 +48,15 @@ extern ColorSpace Blue;
 CCNode* createRectNode(float width, float height, ccColor4F fillColor);
 CCNode* createRoundRectNode(float width, float height, float radius, ccColor4F fillColor);
 CCNode* createCircleNode(float radius, ccColor4F fillColor);
+
+bool pointInNode(CCNode* node, const CCPoint& worldPoint);
+
+template<class type>
+std::string number2string(type n) {
+    std::stringstream ss;
+    ss << n;
+    return ss.str();
+}
 
 inline CCSize screenSize() {
     return CCDirector::sharedDirector()->getWinSize();

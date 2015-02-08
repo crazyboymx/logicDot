@@ -62,7 +62,7 @@ void DotNode::createNodeList(const ColorSpace& cs, float width, float height) {
 CCNode* DotNode::createNode(const ColorSpace& cs, float width, float height, Status status) {
     CCNode* node = NULL;
     CCNode* child = NULL;
-    float dotRadius = width / 6;
+    float dotRadius = width / 4;
     switch (status) {
     case UNKNOWN:
         node = NULL;

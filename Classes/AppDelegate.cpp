@@ -1,5 +1,6 @@
 #include "AppDelegate.h"
 #include "MenuLayer.h"
+#include "GameLayer.h"
 #include <vector>
 #include <algorithm>
 
@@ -74,7 +75,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // create a scene. it's an autorelease object
     CCScene *pScene = CCScene::create();
-    pScene->addChild(MenuLayer::create());
+    GameLayer* gl = GameLayer::create();
+    gl->initWithPuzzle(Puzzle::generate(5, 5), Red);
+    pScene->addChild(gl);
 
     // run
     pDirector->runWithScene(pScene);

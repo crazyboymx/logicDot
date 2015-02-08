@@ -10,6 +10,9 @@
  ******************************************************************/
 
 #include "Util.h"
+#include <string>
+#include <sstream>
+
 USING_NS_CC;
 
 const int kTouchPriorityLayer = -256;
@@ -23,12 +26,13 @@ const int MiddleRadius = 15;
 const int LargeRadius = 20;
 
 ColorSpace Red = {
-    ccc4f(0.4, 0.0, 0.0, 1.0),
+    ccc4f(0.7, 0.0, 0.0, 0.5),
     ccc4f(0.7 ,0.0, 0.0, 1.0),
     ccc4f(1.0, 0.0, 0.0, 1.0),
     ccc4f(1.0, 1.0, 1.0, 1.0),
     ccc4f(0.6, 0.6, 0.6, 1.0),
     ccc4f(0.8, 0.8, 0.8, 1.0),
+    ccc3(255, 0, 0),
 };
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor) {
@@ -58,4 +62,12 @@ CCNode* createCircleNode(float radius, ccColor4F fillColor) {
     node->drawDot(ccp(radius, radius), radius, fillColor);
     node->setContentSize(CCSize(radius*2, radius*2));
     return node;
+}
+
+bool pointInNode(CCNode* node, const CCPoint& worldPoint) {
+    CCPoint p = worldPoint;
+    if (node->getParent()) {
+        p = node->getParent()->convertToNodeSpace(worldPoint);
+    }
+    return node->boundingBox().containsPoint(p);
 }

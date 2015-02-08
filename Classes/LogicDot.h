@@ -46,6 +46,10 @@ enum Status {
     MAX_STATUS,
 };
 
+inline bool isDot(Status status) {
+    return status != UNKNOWN && status != EMPTY && status != HINT_EMPTY && status != MAX_STATUS;
+}
+
 struct Cell {
     Point pos;
     Status status;
@@ -102,6 +106,8 @@ public:
     static Puzzle* generate(int width, int height);
     bool valid();
     void clear();
+    void setStatus(int row, int col, Status status);
+    bool canPutDot(int row, int col);
 
     std::string toString();
     static Puzzle* load(const std::string &str);
