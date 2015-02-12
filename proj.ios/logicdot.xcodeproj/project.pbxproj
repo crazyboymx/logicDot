@@ -2114,7 +2114,7 @@
 					"\"$(SRCROOT)/../../cocos2d-x/cocos2dx/platform/third_party/ios/libraries\"",
 					"\"$(SRCROOT)/../../cocos2d-x/external/libwebsockets/ios/lib\"",
 				);
-				OTHER_CFLAGS = "-O2";
+				OTHER_CFLAGS = "-O0";
 				PRODUCT_NAME = logicdot;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";

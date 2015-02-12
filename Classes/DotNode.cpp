@@ -140,6 +140,7 @@ CCNode* DotNode::createStatusNode(const ColorSpace& cs, float width, float heigh
         node = createRoundRectNode(width, height, MiddleRadius, cs.bg);
         break;
     case EMPTY:
+            CCLOG("width: %0.2f, height: %0.2f, radius: %0.2f", width, height, MiddleRadius);
         node = createRoundRectNode(width, height, MiddleRadius, cs.light);
         break;
     case DOT:

@@ -4,7 +4,7 @@
  * @File: GameLayer.h
  * $Id: GameLayer.h v 1.0 2015-01-27 07:59:45 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-03 11:04:49 $
+ * $Last modified: 2015-02-12 17:07:15 $
  * @brief
  *
  ******************************************************************/
@@ -50,6 +50,7 @@ private:
         }
         return row * mPuzzle->size.height + col;
     }
+    bool setDotStatus(int row, int col, Status status);
 
     ColorSpace mCs;
     Puzzle* mPuzzle;

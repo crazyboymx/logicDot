@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-08 18:05:04 $
+ * $Last modified: 2015-02-12 17:52:29 $
  * @brief
  *
  ******************************************************************/
@@ -72,7 +72,7 @@ void GameLayer::initDotNodes() {
     for (int row = 0; row < mPuzzle->row.size(); row++) {
         CCLabelTTF* label = CCLabelTTF::create(number2string(mPuzzle->row[row]).c_str(), fontName, 32);
         label->setAnchorPoint(ccp(0.5, 0.5));
-        label->setPosition(ccp(- labelSize / 2, gridSize.height - gridLength * row - gridLength / 2 - gridBoarder));
+        label->setPosition(ccp(- labelSize / 2, gridLength * row + gridLength / 2 + gridBoarder));
         label->setFontFillColor(mCs.fontColor);
         mBoard->addChild(label);
         mRowLabelList[row] = label;
@@ -91,10 +91,28 @@ void GameLayer::initDotNodes() {
             mDotNodeList.push_back(DotNode::create());
             mDotNodeList[idx]->init(mCs, dotNodeLength, dotNodeLength, mPuzzle->cells[row][col].status);
             mDotNodeList[idx]->setAnchorPoint(ccp(0.5, 0.5));
-            mDotNodeList[idx]->setPosition(ccp(gridLength * col + gridLength / 2 + gridBoarder, gridSize.height - gridLength * row - gridLength / 2 - gridBoarder));
+            mDotNodeList[idx]->setPosition(ccp(gridLength * col + gridLength / 2 + gridBoarder, gridLength * row + gridLength / 2 + gridBoarder));
             mBoard->addChild(mDotNodeList[idx]);
         }
     }
+}
+
+bool GameLayer::setDotStatus(int row, int col, Status status) {
+    mPuzzle->setStatus(row, col, status);
+    mDotNodeList[index(row, col)]->setStatus(mPuzzle->cells[row][col].status, mPuzzle->cells[row][col].flag);
+    if (col - 1 >= 0) {
+        mDotNodeList[index(row, col - 1)]->setStatus(mPuzzle->cells[row][col - 1].status, mPuzzle->cells[row][col - 1].flag);
+    }
+    if (row + 1 < mPuzzle->row.size()) {
+        mDotNodeList[index(row + 1, col)]->setStatus(mPuzzle->cells[row + 1][col].status, mPuzzle->cells[row + 1][col].flag);
+    }
+    if (col + 1 < mPuzzle->column.size()) {
+        mDotNodeList[index(row, col + 1)]->setStatus(mPuzzle->cells[row][col + 1].status, mPuzzle->cells[row][col + 1].flag);
+    }
+    if (row - 1 >= 0) {
+        mDotNodeList[index(row - 1, col)]->setStatus(mPuzzle->cells[row - 1][col].status, mPuzzle->cells[row - 1][col].flag);
+    }
+    return status == mPuzzle->cells[row][col].status;
 }
 
 void GameLayer::updateLabels() {
@@ -109,19 +127,19 @@ void GameLayer::updateLabels() {
 void GameLayer::touchOnBoard(int row, int col) {
     Status status = mPuzzle->cells[row][col].status;
     if (status == UNKNOWN) {
-        mPuzzle->setStatus(row, col, EMPTY);
-        mDotNodeList[index(row, col)]->setStatus(EMPTY, mPuzzle->cells[row][col].flag);
+        setDotStatus(row, col, EMPTY);
     }
     else {
-        mPuzzle->setStatus(row, col, UNKNOWN);
-        mDotNodeList[index(row, col)]->setStatus(UNKNOWN, mPuzzle->cells[row][col].flag);
+        setDotStatus(row, col, UNKNOWN);
     }
     updateLabels();
 }
 
 void GameLayer::doubleTouchOnBoard(int row, int col) {
-    mPuzzle->setStatus(row, col, DOT);
-    mDotNodeList[index(row, col)]->setStatus(DOT, mPuzzle->cells[row][col].flag);
+    if (mPuzzle->canPutDot(row, col) == false) {
+        return;
+    }
+    setDotStatus(row, col, DOT);
     updateLabels();
 }
 
@@ -143,13 +161,14 @@ bool GameLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
             if ((touchTime - mLastTouchTime) < DOUBLE_CLICK_THRESHOLD) {
                 doubleTouchOnBoard(row, col);
                 mLastTouchTime = 0;
-                mStatusInDrag = DOT;
+                mStatusInDrag = mPuzzle->cells[row][col].status;
             }
             else {
                 mLastTouchTime = touchTime;
                 touchOnBoard(row, col);
                 mStatusInDrag = mPuzzle->cells[row][col].status;
             }
+            mLastTouchIndex = idx;
             return true;
         }
     }
@@ -173,8 +192,10 @@ void GameLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
             }
             if (mLastTouchIndex != idx) {
                 mLastTouchIndex = idx;
-                mPuzzle->setStatus(row, col, mStatusInDrag);
-                mDotNodeList[idx]->setStatus(mStatusInDrag, mPuzzle->cells[row][col].flag);
+                if (mStatusInDrag == DOT && mPuzzle->canPutDot(row, col) == false) {
+                    return;
+                }
+                setDotStatus(row, col, mStatusInDrag);
                 updateLabels();
             }
             return;
@@ -183,7 +204,8 @@ void GameLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
 }
 
 void GameLayer::ccTouchEnded(CCTouch* touch, CCEvent* event) {
-    CCPoint location = touch->getLocation();
+    mLastTouchIndex = -1;
+    //CCPoint location = touch->getLocation();
     //this->removeFromParent();
 }
 

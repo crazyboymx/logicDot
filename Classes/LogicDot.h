@@ -4,7 +4,7 @@
  * @File: LogicDot.h
  * $Id: LogicDot.h v 1.0 2015-01-22 11:34:29 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-22 11:41:50 $
+ * $Last modified: 2015-02-12 17:11:14 $
  * @brief
  *
  ******************************************************************/
@@ -108,7 +108,8 @@ public:
     bool valid();
     void clear();
     void setStatus(int row, int col, Status status);
-    bool canPutDot(int row, int col);
+    bool canPutDot(int row, int col, bool hint = false);
+    void updateFlag(int row, int col);
 
     std::string toString();
     static Puzzle* load(const std::string &str);

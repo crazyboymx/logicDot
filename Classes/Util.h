@@ -38,9 +38,9 @@ extern const int kTouchPriorityLayer;
 
 extern const char* fontName;
 
-extern const int SmallRadius;
-extern const int MiddleRadius;
-extern const int LargeRadius;
+extern const float SmallRadius;
+extern const float MiddleRadius;
+extern const float LargeRadius;
 
 extern ccColor3B fontColor;
 extern ColorSpace Red;

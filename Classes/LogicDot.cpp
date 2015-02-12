@@ -4,7 +4,7 @@
  * @File: LogicDot.cpp
  * $Id: LogicDot.cpp v 1.0 2015-01-20 20:10:39 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-08 15:29:32 $
+ * $Last modified: 2015-02-12 18:13:12 $
  * @brief
  *
  ******************************************************************/
@@ -116,6 +116,9 @@ void Puzzle::setStatus(int row, int col, Status status) {
     if (oldStatus == status) {
         return;
     }
+    if (status == DOT && canPutDot(row, col) == false) {
+        return;
+    }
     cells[row][col].status = status;
     if (isDot(oldStatus) && !isDot(status)) {
         this->row[row]++;
@@ -125,13 +128,79 @@ void Puzzle::setStatus(int row, int col, Status status) {
         this->row[row]--;
         this->column[col]--;
     }
+    updateFlag(row, col);
 }
 
-bool Puzzle::canPutDot(int row, int col) {
+void Puzzle::updateFlag(int row, int col) {
+    Cell& c = cells[row][col];
+    c.flag = 0;
+    // left
+    if (col - 1 >= 0) {
+        if (isHint(c.status)) {
+            c.flag |= (isDot(c.status) && isDot(cells[row][col - 1].hint) ? HINT_LEFT : 0x0);
+        }
+        else {
+            c.flag |= (isDot(c.status) && isDot(cells[row][col - 1].status) ? LEFT : 0x0);
+        }
+        if ((c.flag & LEFT || c.flag & HINT_LEFT) && !isHint(cells[row][col - 1].status)) {
+            cells[row][col - 1].flag |= RIGHT;
+        }
+        if (!(c.flag & LEFT || c.flag & HINT_LEFT) && !isHint(cells[row][col - 1].status) && isDot(cells[row][col - 1].status)) {
+            cells[row][col - 1].flag &= ~RIGHT;
+        }
+    }
+    // up
+    if (row + 1 < this->row.size()) {
+        if (isHint(c.status)) {
+            c.flag |= (isDot(c.status) && isDot(cells[row + 1][col].hint) ? HINT_UP : 0x0);
+        }
+        else {
+            c.flag |= (isDot(c.status) && isDot(cells[row + 1][col].status) ? UP : 0x0);
+        }
+        if ((c.flag & UP || c.flag & HINT_UP) && !isHint(cells[row + 1][col].status)) {
+            cells[row + 1][col].flag |= DOWN;
+        }
+        if (!(c.flag & UP || c.flag & HINT_UP) && !isHint(cells[row + 1][col].status) && isDot(cells[row + 1][col].status)) {
+            cells[row + 1][col].flag &= ~DOWN;
+        }
+    }
+    // right
+    if (col + 1 < this->column.size()) {
+        if (isHint(c.status)) {
+            c.flag |= (isDot(c.status) && isDot(cells[row][col + 1].hint) ? HINT_RIGHT : 0x0);
+        }
+        else {
+            c.flag |= (isDot(c.status) && isDot(cells[row][col + 1].status) ? RIGHT : 0x0);
+        }
+        if ((c.flag & RIGHT || c.flag & HINT_RIGHT) && !isHint(cells[row][col + 1].status)) {
+            cells[row][col + 1].flag |= LEFT;
+        }
+        if (!(c.flag & RIGHT || c.flag & HINT_RIGHT) && !isHint(cells[row][col + 1].status) && isDot(cells[row][col + 1].status)) {
+            cells[row][col + 1].flag &= ~LEFT;
+        }
+    }
+    // down
+    if (row - 1 >= 0) {
+        if (isHint(c.status)) {
+            c.flag |= (isDot(c.status) && isDot(cells[row - 1][col].hint) ? HINT_DOWN : 0x0);
+        }
+        else {
+            c.flag |= (isDot(c.status) && isDot(cells[row - 1][col].status) ? DOWN : 0x0);
+        }
+        if ((c.flag & DOWN || c.flag & HINT_DOWN) && !isHint(cells[row - 1][col].status)) {
+            cells[row - 1][col].flag |= UP;
+        }
+        if (!(c.flag & DOWN || c.flag & HINT_DOWN) && !isHint(cells[row - 1][col].status) && isDot(cells[row - 1][col].status)) {
+            cells[row - 1][col].flag &= ~UP;
+        }
+    }
+}
+
+bool Puzzle::canPutDot(int row, int col, bool hint) {
     int grid[3][3];
     for (int i = 0; i < 3; i ++) {
         for (int j = 0; j < 3; j++) {
-            grid[i][j] = (row - 1 + i < 0 || col - 1 + j < 0 || row -1 + i >= size.height || col - 1 + j >= size.width) ? UNKNOWN : cells[row - 1 + i][col - 1 + j].hint;
+            grid[i][j] = (row - 1 + i < 0 || col - 1 + j < 0 || row -1 + i >= size.height || col - 1 + j >= size.width) ? UNKNOWN : hint ? cells[row - 1 + i][col - 1 + j].hint : cells[row - 1 + i][col - 1 + j].status;
         }
     }
     if (isDot((Status)grid[1][1]) || isDot((Status)grid[0][0]) || isDot((Status)grid[0][2]) || isDot((Status)grid[2][0]) || isDot((Status)grid[2][2])) {
@@ -246,7 +315,7 @@ bool Puzzle::putDotToHint(int row, int col) {
         (grid[1][2] == DOT && (grid[0][2] == DOT || grid[2][2] == DOT || grid[0][1] == DOT || grid[2][1] == DOT))) {
         return false;
     }*/
-    if (canPutDot(row, col) == false) {
+    if (canPutDot(row, col, true) == false) {
         return false;
     }
     cells[row][col].hint = DOT;
