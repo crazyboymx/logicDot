@@ -4,7 +4,7 @@
  * @File: LogicDot.cpp
  * $Id: LogicDot.cpp v 1.0 2015-01-20 20:10:39 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-12 18:13:12 $
+ * $Last modified: 2015-02-13 16:58:11 $
  * @brief
  *
  ******************************************************************/
@@ -70,6 +70,7 @@ Puzzle* Puzzle::generate(int width, int height) {
             std::cout << "remain dots: " << dots << std::endl;
         }
         p->fillHint();
+        p->fillShapes();
         if (p->valid() == false) {
             std::cout << "not valid" << std::endl;
             p->clear();
@@ -337,3 +338,5 @@ void Puzzle::fillHint() {
     }
 }
 
+void Puzzle::calcShapes(bool hint) {
+}

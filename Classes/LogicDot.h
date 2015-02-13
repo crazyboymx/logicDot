@@ -4,7 +4,7 @@
  * @File: LogicDot.h
  * $Id: LogicDot.h v 1.0 2015-01-22 11:34:29 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-12 17:11:14 $
+ * $Last modified: 2015-02-13 18:13:39 $
  * @brief
  *
  ******************************************************************/
@@ -99,6 +99,7 @@ public:
     std::vector<std::vector<Cell> > cells;
     std::vector<int> row;
     std::vector<int> column;
+    std::vector<int> shapes;
     Size size;
     Solution solution;
 
@@ -127,6 +128,7 @@ protected:
     void init();
     bool putDotToHint(int row, int col);
     void fillHint();
+    void calcShapes(bool hint = false);
 };
 
 #endif // _LOGICDOT_H_
