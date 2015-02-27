@@ -128,7 +128,7 @@ protected:
     void init();
     bool putDotToHint(int row, int col);
     void fillHint();
-    void calcShapes(bool hint = false);
+    std::vector<int> calcShapes(bool hint = false);
 };
 
 #endif // _LOGICDOT_H_

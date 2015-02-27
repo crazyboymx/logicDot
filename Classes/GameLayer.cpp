@@ -157,13 +157,15 @@ bool GameLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
             if (isHint(mPuzzle->cells[row][col].status)) {
                 return false;
             }
-            long touchTime = currentTime();
+            double touchTime = currentTime();
             if ((touchTime - mLastTouchTime) < DOUBLE_CLICK_THRESHOLD) {
                 doubleTouchOnBoard(row, col);
                 mLastTouchTime = 0;
                 mStatusInDrag = mPuzzle->cells[row][col].status;
             }
             else {
+                
+                CCLOG("TouchOnBoard");
                 mLastTouchTime = touchTime;
                 touchOnBoard(row, col);
                 mStatusInDrag = mPuzzle->cells[row][col].status;

@@ -19,8 +19,8 @@
 
 USING_NS_CC;
 
-// 双击时间间隔，单位毫秒
-#define DOUBLE_CLICK_THRESHOLD 500
+// 双击时间间隔，单位秒
+#define DOUBLE_CLICK_THRESHOLD 0.5
 // 两个grid之间的间隔
 #define GRID_GAP    5
 
@@ -72,10 +72,11 @@ inline CCPoint center() {
     return ccp(screenSize().width / 2, screenSize().height / 2);
 }
 
-inline long currentTime() {
+inline double currentTime() {
     struct timeval tv;
     gettimeofday(&tv,NULL);
-    return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    CCLOG("tc_sec: %ld, usec: %ld", tv.tv_sec, tv.tv_usec);
+    return tv.tv_sec * 1.0 + tv.tv_usec * 1.0 / 1000000;
 }
 
 #endif // _UTIL_H_

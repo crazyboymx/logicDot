@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <set>
 
 int myrandom(int i) {
     return rand() % i;
@@ -70,7 +71,7 @@ Puzzle* Puzzle::generate(int width, int height) {
             std::cout << "remain dots: " << dots << std::endl;
         }
         p->fillHint();
-        p->fillShapes();
+        p->solution.shapes = p->calcShapes(true);
         if (p->valid() == false) {
             std::cout << "not valid" << std::endl;
             p->clear();
@@ -292,6 +293,11 @@ void Puzzle::init() {
         }
     }
 
+    shapes.clear();
+    for (int i = 0; i < size.height; i ++) {
+        shapes.push_back(0);
+    }
+
     for (int i = 0; i < size.height; i++) {
         row.push_back(0);
     }
@@ -338,5 +344,29 @@ void Puzzle::fillHint() {
     }
 }
 
-void Puzzle::calcShapes(bool hint) {
+std::vector<int> Puzzle::calcShapes(bool hint) {
+    std::set<int> processed;
+    std::vector<int> sp(size.width+1, 0);
+    for (int row = 0; row < this->row.size(); row++) {
+        for (int col = 0; col < this->column.size(); col++) {
+            int idx = row * this->column.size() + col;
+            bool dot = hint ? cells[row][col].hint : cells[row][col].status;
+            if (!dot || processed.find(idx) != processed.end()) {
+                continue;
+            }
+            int count = 0;
+            int r = row;
+            while (r < this->row.size() && isDot(cells[r][col].status)) {
+                count++;
+                r++;
+            }
+            int c = col;
+            while (c < this->column.size() && isDot(cells[row][col].status)) {
+                count++;
+                c++;
+            }
+            sp[count]++;
+        }
+    }
+    return sp;
 }

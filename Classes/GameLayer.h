@@ -60,7 +60,7 @@ private:
     CCLabelTTF* mColLabelList[20];
 
     Status mStatusInDrag;
-    long mLastTouchTime;
+    double mLastTouchTime;
     int mLastTouchIndex;
 };
 
