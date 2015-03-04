@@ -24,7 +24,7 @@ bool DotNode::init() {
 void DotNode::init(const ColorSpace& cs, float width, float height, Status status) {
     mStatus = status;
     this->setContentSize(CCSize(width, height));
-    CCNode* bg = createRoundRectNode(width, height, MiddleRadius, cs.bg);
+    CCNode* bg = createRoundRectNode(width, height, SmallRadius, cs.bg);
     this->addChild(bg);
 
     createNodeMap(cs, width, height);
@@ -137,17 +137,16 @@ CCNode* DotNode::createStatusNode(const ColorSpace& cs, float width, float heigh
     CCNode* node = NULL;
     switch (status) {
     case UNKNOWN:
-        node = createRoundRectNode(width, height, MiddleRadius, cs.bg);
+        node = createRoundRectNode(width, height, SmallRadius, cs.bg);
         break;
     case EMPTY:
-            CCLOG("width: %0.2f, height: %0.2f, radius: %0.2f", width, height, MiddleRadius);
-        node = createRoundRectNode(width, height, MiddleRadius, cs.light);
+        node = createRoundRectNode(width, height, SmallRadius, cs.light);
         break;
     case DOT:
         node = createCircleNode(dotRadius, cs.normal);
         break;
     case HINT_EMPTY:
-        node = createRoundRectNode(width, height, MiddleRadius, cs.hint);
+        node = createRoundRectNode(width, height, SmallRadius, cs.hint);
         break;
     case HINT_DOT:
         node = createCircleNode(dotRadius, cs.hint);

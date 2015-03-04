@@ -4,7 +4,7 @@
  * @File: LogicDot.cpp
  * $Id: LogicDot.cpp v 1.0 2015-01-20 20:10:39 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-13 16:58:11 $
+ * $Last modified: 2015-03-02 21:37:12 $
  * @brief
  *
  ******************************************************************/
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <sstream>
 #include <set>
+#include <cocos2d.h>
 
 int myrandom(int i) {
     return rand() % i;
@@ -54,7 +55,8 @@ Puzzle* Puzzle::generate(int width, int height) {
     }
     std::srand(unsigned(std::time(0)));
     while(!p->valid()) {
-        p->solution.dots = random((width - 3)*(height-3), (width - 2)*(height-2));
+        int squar = width * height;
+        p->solution.dots = random(squar / 4 - width / 4, squar / 4 + width);
         std::random_shuffle(candidate.begin(), candidate.end(), myrandom);
         int i = 0;
         int dots = p->solution.dots;
@@ -75,6 +77,7 @@ Puzzle* Puzzle::generate(int width, int height) {
         if (p->valid() == false) {
             std::cout << "not valid" << std::endl;
             p->clear();
+            CCLOG("try again!!!!!!!!!!!!!!!");
         }
     }
 
@@ -131,6 +134,7 @@ void Puzzle::setStatus(int row, int col, Status status) {
         this->column[col]--;
     }
     updateFlag(row, col);
+    shapes = calcShapes();
 }
 
 void Puzzle::updateFlag(int row, int col) {
@@ -350,19 +354,22 @@ std::vector<int> Puzzle::calcShapes(bool hint) {
     for (int row = 0; row < this->row.size(); row++) {
         for (int col = 0; col < this->column.size(); col++) {
             int idx = row * this->column.size() + col;
-            bool dot = hint ? cells[row][col].hint : cells[row][col].status;
+            bool dot = isDot(hint ? cells[row][col].hint : cells[row][col].status);
             if (!dot || processed.find(idx) != processed.end()) {
                 continue;
             }
-            int count = 0;
-            int r = row;
-            while (r < this->row.size() && isDot(cells[r][col].status)) {
+            int count = 1;
+            processed.insert(idx);
+            int r = row + 1;
+            while (r < this->row.size() && isDot(hint ? cells[r][col].hint : cells[r][col].status)) {
                 count++;
+                processed.insert(r * this->column.size() + col);
                 r++;
             }
-            int c = col;
-            while (c < this->column.size() && isDot(cells[row][col].status)) {
+            int c = col + 1;
+            while (c < this->column.size() && isDot(hint ? cells[row][c].hint : cells[row][c].status)) {
                 count++;
+                processed.insert(row * this->column.size() + c);
                 c++;
             }
             sp[count]++;

@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-12 17:52:29 $
+ * $Last modified: 2015-03-04 14:15:52 $
  * @brief
  *
  ******************************************************************/
@@ -13,6 +13,8 @@
 #include "Util.h"
 
 USING_NS_CC;
+
+#define MAP_INDEX(i, j) ((i) * 100 + (j))
 
 GameLayer::~GameLayer() {
     if (mPuzzle != NULL) {
@@ -48,8 +50,75 @@ void GameLayer::initWithConfig(const GameConfig& config, const ColorSpace& cs) {
 
 void GameLayer::initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs) {
     mPuzzle = puzzle;
+    mPuzzle->print();
     mCs = cs;
+    initTitle();
+    initShapes();
     initDotNodes();
+    updateShapes();
+}
+
+void GameLayer::initTitle() {
+    mTitleBg = createRectNode(screenSize().width, 36, mCs.dark);
+    mTitleBg->setAnchorPoint(ccp(0, 1));
+    mTitleBg->setPosition(ccp(0, screenSize().height));
+    this->addChild(mTitleBg);
+
+    CCSize halfSize = CCSize(mTitleBg->getContentSize().width / 2, mTitleBg->getContentSize().height);
+    std::string titleString = "" + number2string(mPuzzle->size.width) + "x" + number2string(mPuzzle->size.height) + "    ";
+    CCLabelTTF* title = CCLabelTTF::create(titleString.c_str(), fontName, 32, halfSize, kCCTextAlignmentCenter, kCCVerticalTextAlignmentCenter);
+    title->setAnchorPoint(ccp(0, 0));
+    title->setPosition(ccp(0, 0));
+    mTitleBg->addChild(title);
+
+    std::string scoreString = "    Score: " + number2string(0);
+    mScoreLabel = CCLabelTTF::create(scoreString.c_str(), fontName, 32, halfSize, kCCTextAlignmentLeft, kCCVerticalTextAlignmentCenter);
+    mScoreLabel->setAnchorPoint(ccp(0, 0));
+    mScoreLabel->setPosition((ccp(halfSize.width, 0)));
+    mTitleBg->addChild(mScoreLabel);
+}
+
+void GameLayer::initShapes() {
+    float shapeBgHeight = 100.0f;
+    float shapeRowCount = 3;
+    float padding = 5;
+    float shapeRowHeight = (shapeBgHeight - padding * 2) / shapeRowCount;
+    float shapeDotSize = shapeRowHeight * 0.75;
+    if (mPuzzle->size.width > 10) {
+        shapeDotSize *= 0.75;
+    }
+    float shapeBgPosY = mTitleBg->getPositionY() - mTitleBg->getContentSize().height * mTitleBg->getAnchorPoint().y;
+    mShapesBg = createRectNode(screenSize().width, shapeBgHeight, mCs.shapeBg);
+    mShapesBg->setAnchorPoint(ccp(0, 1));
+    mShapesBg->setPosition(ccp(0, shapeBgPosY));
+    this->addChild(mShapesBg);
+
+    float rowPosY[3] = { shapeRowHeight * 2.5, shapeRowHeight * 1.5, shapeRowHeight * 0.5 };
+    int row = 0;
+    float posX = 20.0;
+    float nextPosX = posX;
+    for (int i = mPuzzle->solution.shapes.size() - 1; i >= 0; -- i) {
+        for (int j = 0; j < mPuzzle->solution.shapes[i]; ++ j) {
+            CCNode* shape = createShape(i, shapeDotSize, mCs.shapeDark, mCs.shapeLight);
+            shape->setAnchorPoint(ccp(0.0, 0.5));
+            shape->setPosition(ccp(posX, rowPosY[row]));
+            mShapesBg->addChild(shape);
+            mShapesList[MAP_INDEX(i, j)] = shape;
+            CCNode* matchedShape = createShape(i, shapeDotSize, mCs.normal, mCs.light);
+            matchedShape->setAnchorPoint(ccp(0.0, 0.5));
+            matchedShape->setPosition(ccp(posX, rowPosY[row]));
+            mMatchedShapesList[MAP_INDEX(i, j)] = matchedShape;
+            CCLOG("create shape: %d, pos %0.2f, %0.2f", i, posX, rowPosY[row]);
+            mShapesBg->addChild(matchedShape);
+            if (row == 0) {
+                nextPosX = posX + shape->getContentSize().width;
+            }
+            row = (row + 1) % 3;
+            if (row == 0) {
+                posX = nextPosX;
+            }
+        }
+    }
 }
 
 void GameLayer::initDotNodes() {
@@ -97,6 +166,57 @@ void GameLayer::initDotNodes() {
     }
 }
 
+CCNode* GameLayer::createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light) {
+    CCNode* node = CCNode::create();
+    node->setContentSize(CCSize(dotSize * (3 * dotCount + 1) / 2, dotSize));
+    float radius = dotSize * 0.5;
+    for (int i = 0; i < dotCount; ++ i) {
+        CCNode* dot = createCircleNode(radius, dark);
+        dot->setAnchorPoint(ccp(0.5, 0.5));
+        dot->setPosition(ccp(radius * 2 + i * radius * 3, radius));
+        node->addChild(dot);
+    }
+    for (int i = 0; i < dotCount - 1; ++ i) {
+        CCNode* link = createRectNode(radius * 3, radius * 2, light);
+        link->setAnchorPoint(ccp(0, 0.5));
+        link->setPosition(ccp(radius * 2 + radius * i * 3, radius));
+        node->addChild(link);
+    }
+    return node;
+}
+
+void GameLayer::updateStatus() {
+    updateLabels();
+    updateShapes();
+}
+
+void GameLayer::updateLabels() {
+    for (int i = 0; i < mPuzzle->row.size(); i++) {
+        mRowLabelList[i]->setString(number2string(mPuzzle->row[i]).c_str());
+    }
+    for (int i = 0; i < mPuzzle->column.size(); i++) {
+        mColLabelList[i]->setString(number2string(mPuzzle->column[i]).c_str());
+    }
+}
+
+void GameLayer::updateShapes() {
+    std::map<int, CCNode*>::iterator iter = mShapesList.begin();
+    for (; iter != mShapesList.end(); ++ iter) {
+        iter->second->setVisible(true);
+        mMatchedShapesList[iter->first]->setVisible(false);
+    }
+    for (int i = mPuzzle->shapes.size() - 1; i >= 0; -- i) {
+        for (int j = 0; j < mPuzzle->shapes[i]; ++ j) {
+            int idx = MAP_INDEX(i, j);
+            if (mMatchedShapesList.find(idx) == mMatchedShapesList.end()) {
+                continue;
+            }
+            mMatchedShapesList[MAP_INDEX(i, j)]->setVisible(true);
+            mShapesList[MAP_INDEX(i, j)]->setVisible(false);
+        }
+    }
+}
+
 bool GameLayer::setDotStatus(int row, int col, Status status) {
     mPuzzle->setStatus(row, col, status);
     mDotNodeList[index(row, col)]->setStatus(mPuzzle->cells[row][col].status, mPuzzle->cells[row][col].flag);
@@ -115,15 +235,6 @@ bool GameLayer::setDotStatus(int row, int col, Status status) {
     return status == mPuzzle->cells[row][col].status;
 }
 
-void GameLayer::updateLabels() {
-    for (int i = 0; i < mPuzzle->row.size(); i++) {
-        mRowLabelList[i]->setString(number2string(mPuzzle->row[i]).c_str());
-    }
-    for (int i = 0; i < mPuzzle->column.size(); i++) {
-        mColLabelList[i]->setString(number2string(mPuzzle->column[i]).c_str());
-    }
-}
-
 void GameLayer::touchOnBoard(int row, int col) {
     Status status = mPuzzle->cells[row][col].status;
     if (status == UNKNOWN) {
@@ -132,7 +243,7 @@ void GameLayer::touchOnBoard(int row, int col) {
     else {
         setDotStatus(row, col, UNKNOWN);
     }
-    updateLabels();
+    updateStatus();
 }
 
 void GameLayer::doubleTouchOnBoard(int row, int col) {
@@ -140,7 +251,7 @@ void GameLayer::doubleTouchOnBoard(int row, int col) {
         return;
     }
     setDotStatus(row, col, DOT);
-    updateLabels();
+    updateStatus();
 }
 
 bool GameLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
@@ -164,8 +275,6 @@ bool GameLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
                 mStatusInDrag = mPuzzle->cells[row][col].status;
             }
             else {
-                
-                CCLOG("TouchOnBoard");
                 mLastTouchTime = touchTime;
                 touchOnBoard(row, col);
                 mStatusInDrag = mPuzzle->cells[row][col].status;
@@ -198,7 +307,7 @@ void GameLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
                     return;
                 }
                 setDotStatus(row, col, mStatusInDrag);
-                updateLabels();
+                updateStatus();
             }
             return;
         }

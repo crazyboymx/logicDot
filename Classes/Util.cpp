@@ -21,7 +21,7 @@ const char* fontName = "Helvetica";
 
 ccColor3B fontColor = ccc3(255, 255, 255);
 
-const float SmallRadius = 10;
+const float SmallRadius = 5;
 const float MiddleRadius = 15;
 const float LargeRadius = 20;
 
@@ -33,6 +33,9 @@ ColorSpace Red = {
     ccc4f(0.6, 0.6, 0.6, 0.5),
     ccc4f(0.8, 0.8, 0.8, 1.0),
     ccc3(255, 0, 0),
+    ccc4f(1.0, 1.0, 1.0, 1.0),
+    ccc4f(1.0, 1.0, 1.0, 0.5),
+    ccc4f(0.5, 0.0, 0.0, 0.5),
 };
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor) {

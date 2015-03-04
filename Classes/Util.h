@@ -32,6 +32,9 @@ struct ColorSpace {
     ccColor4F hint;         // hint status color
     ccColor4F hintLight;    // hint status color
     ccColor3B fontColor;    // font color
+    ccColor4F shapeDark;    // shape dot color: dark
+    ccColor4F shapeLight;   // shape dot color: light
+    ccColor4F shapeBg;      // shape back ground color
 };
 
 extern const int kTouchPriorityLayer;

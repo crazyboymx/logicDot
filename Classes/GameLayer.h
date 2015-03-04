@@ -36,14 +36,20 @@ public:
 
     void touchOnBoard(int row, int col);
     void doubleTouchOnBoard(int row, int col);
+    void updateStatus();
     void updateLabels();
+    void updateShapes();
 
     void initWithConfig(const GameConfig& config, const ColorSpace& cs);
     void initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs);
     void registerWithTouchDispatcher();
 
 private:
+    void initTitle();
+    void initShapes();
     void initDotNodes();
+    CCNode* createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light);
+
     int inline index(int row, int col) {
         if (mPuzzle == NULL) {
             return 0;
@@ -58,6 +64,11 @@ private:
     std::vector<DotNode*> mDotNodeList;
     CCLabelTTF* mRowLabelList[20];
     CCLabelTTF* mColLabelList[20];
+    CCLabelTTF* mScoreLabel;
+    CCNode* mTitleBg;
+    CCNode* mShapesBg;
+    std::map<int, CCNode*> mShapesList;
+    std::map<int, CCNode*> mMatchedShapesList;
 
     Status mStatusInDrag;
     double mLastTouchTime;

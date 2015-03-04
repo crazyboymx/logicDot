@@ -68,10 +68,10 @@ done
 # run ndk-build
 if [[ "$buildexternalsfromsource" ]]; then
     echo "Building external dependencies from source"
-    "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
+    "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" -j8 $* \
         "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/source"
 else
     echo "Using prebuilt externals"
-    "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" $* \
+    "$NDK_ROOT"/ndk-build -C "$APP_ANDROID_ROOT" -j8 $* \
         "NDK_MODULE_PATH=${COCOS2DX_ROOT}:${COCOS2DX_ROOT}/cocos2dx/platform/third_party/android/prebuilt"
 fi
