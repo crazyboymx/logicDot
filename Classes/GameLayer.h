@@ -4,7 +4,7 @@
  * @File: GameLayer.h
  * $Id: GameLayer.h v 1.0 2015-01-27 07:59:45 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-12 17:07:15 $
+ * $Last modified: 2015-03-09 17:11:45 $
  * @brief
  *
  ******************************************************************/
@@ -48,6 +48,7 @@ private:
     void initTitle();
     void initShapes();
     void initDotNodes();
+    void initMenus();
     CCNode* createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light);
 
     void winGame();

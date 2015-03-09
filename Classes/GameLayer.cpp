@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 16:51:30 $
+ * $Last modified: 2015-03-09 17:12:03 $
  * @brief
  *
  ******************************************************************/
@@ -56,6 +56,7 @@ void GameLayer::initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs) {
     initTitle();
     initShapes();
     initDotNodes();
+    initMenus();
     updateShapes();
     this->setTouchEnabled(true);
 }
@@ -136,7 +137,7 @@ void GameLayer::initDotNodes() {
     float dotNodeLength = gridLength - GRID_GAP;
     mBoard = createRoundRectNode(gridSize.width, gridSize.height, MiddleRadius, mCs.normal);
     mBoard->setAnchorPoint(ccp(0.5, 0));
-    mBoard->setPosition(winSize.width / 2, winSize.height - mTitleBg->getContentSize().height - gridSize.height - labelSize - mShapesBg->getContentSize().height - 50);
+    mBoard->setPosition(winSize.width / 2, mShapesBg->getPositionY() - mShapesBg->getContentSize().height * mShapesBg->getAnchorPoint().y - 50);
     this->addChild(mBoard);
     CCLabelTTF* lt = CCLabelTTF::create("0", fontName, 32);
     this->addChild(lt);
@@ -166,6 +167,9 @@ void GameLayer::initDotNodes() {
             mBoard->addChild(mDotNodeList[idx]);
         }
     }
+}
+
+void GameLayer::initMenus() {
 }
 
 CCNode* GameLayer::createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light) {
