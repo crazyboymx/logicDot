@@ -4,13 +4,14 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-04 14:15:52 $
+ * $Last modified: 2015-03-09 16:51:30 $
  * @brief
  *
  ******************************************************************/
 
 #include "GameLayer.h"
 #include "Util.h"
+#include "WinLayer.h"
 
 USING_NS_CC;
 
@@ -56,6 +57,7 @@ void GameLayer::initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs) {
     initShapes();
     initDotNodes();
     updateShapes();
+    this->setTouchEnabled(true);
 }
 
 void GameLayer::initTitle() {
@@ -134,7 +136,7 @@ void GameLayer::initDotNodes() {
     float dotNodeLength = gridLength - GRID_GAP;
     mBoard = createRoundRectNode(gridSize.width, gridSize.height, MiddleRadius, mCs.normal);
     mBoard->setAnchorPoint(ccp(0.5, 0));
-    mBoard->setPosition(winSize.width / 2, 120);
+    mBoard->setPosition(winSize.width / 2, winSize.height - mTitleBg->getContentSize().height - gridSize.height - labelSize - mShapesBg->getContentSize().height - 50);
     this->addChild(mBoard);
     CCLabelTTF* lt = CCLabelTTF::create("0", fontName, 32);
     this->addChild(lt);
@@ -185,9 +187,19 @@ CCNode* GameLayer::createShape(int dotCount, float dotSize, ccColor4F dark, ccCo
     return node;
 }
 
+void GameLayer::winGame() {
+    this->setTouchEnabled(false);
+    WinLayer* wl = WinLayer::create();
+    CCLOG("winGame");
+    this->addChild(wl);
+}
+
 void GameLayer::updateStatus() {
     updateLabels();
     updateShapes();
+    if (mPuzzle->isWin()) {
+        winGame();
+    }
 }
 
 void GameLayer::updateLabels() {

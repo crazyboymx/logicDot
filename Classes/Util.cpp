@@ -4,7 +4,7 @@
  * @File: Util.cpp
  * $Id: Util.cpp v 1.0 2015-01-23 18:05:25 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-12 16:20:32 $
+ * $Last modified: 2015-03-09 15:59:24 $
  * @brief
  *
  ******************************************************************/
@@ -37,6 +37,11 @@ ColorSpace Red = {
     ccc4f(1.0, 1.0, 1.0, 0.5),
     ccc4f(0.5, 0.0, 0.0, 0.5),
 };
+
+ccColor4F menuNormColor = ccc4f(0.7, 0.7, 0.7, 1.0);
+ccColor4F menuSelectedColor = ccc4f(0.55, 0.55, 0.55, 1.0);
+ccColor3B menuNormTextColor = ccc3(127, 127, 127);
+ccColor3B menuSelectedTextColor = ccc3(255, 255, 255);
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor) {
     CCDrawNode* node = CCDrawNode::create();

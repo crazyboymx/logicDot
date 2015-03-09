@@ -46,6 +46,15 @@ char getStatusChar(Status status) {
     }
 }
 
+bool Puzzle::isWin() const {
+    for (int i = 0; i < shapes.size(); ++ i) {
+        if (shapes[i] != solution.shapes[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 Puzzle* Puzzle::generate(int width, int height) {
     Puzzle* p = new Puzzle(width, height);
     int max = width * height - 1;
@@ -84,7 +93,7 @@ Puzzle* Puzzle::generate(int width, int height) {
     return p;
 }
 
-bool Puzzle::valid() {
+bool Puzzle::valid() const {
     int dots = 0;
     for (int i = 0; i < row.size(); i++) {
         dots += row[i];
@@ -202,7 +211,7 @@ void Puzzle::updateFlag(int row, int col) {
     }
 }
 
-bool Puzzle::canPutDot(int row, int col, bool hint) {
+bool Puzzle::canPutDot(int row, int col, bool hint) const {
     int grid[3][3];
     for (int i = 0; i < 3; i ++) {
         for (int j = 0; j < 3; j++) {
@@ -348,7 +357,7 @@ void Puzzle::fillHint() {
     }
 }
 
-std::vector<int> Puzzle::calcShapes(bool hint) {
+std::vector<int> Puzzle::calcShapes(bool hint) const {
     std::set<int> processed;
     std::vector<int> sp(size.width+1, 0);
     for (int row = 0; row < this->row.size(); row++) {

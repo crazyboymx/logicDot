@@ -105,11 +105,12 @@ public:
 
     ~Puzzle() {}
 
+    bool isWin() const;
     static Puzzle* generate(int width, int height);
-    bool valid();
+    bool valid() const;
     void clear();
     void setStatus(int row, int col, Status status);
-    bool canPutDot(int row, int col, bool hint = false);
+    bool canPutDot(int row, int col, bool hint = false) const;
     void updateFlag(int row, int col);
 
     std::string toString();
@@ -128,7 +129,7 @@ protected:
     void init();
     bool putDotToHint(int row, int col);
     void fillHint();
-    std::vector<int> calcShapes(bool hint = false);
+    std::vector<int> calcShapes(bool hint = false) const;
 };
 
 #endif // _LOGICDOT_H_

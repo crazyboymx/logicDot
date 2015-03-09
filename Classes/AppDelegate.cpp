@@ -59,8 +59,7 @@ AppDelegate::AppDelegate() {
 
 }
 
-AppDelegate::~AppDelegate() 
-{
+AppDelegate::~AppDelegate() {
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
@@ -76,7 +75,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     CCScene *pScene = CCScene::create();
     GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::generate(10, 10), Red);
+    gl->initWithPuzzle(Puzzle::generate(4, 4), Red);
     pScene->addChild(gl);
 
     // run

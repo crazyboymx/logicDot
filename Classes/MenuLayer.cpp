@@ -4,7 +4,7 @@
  * @File: MenuLayer.cpp
  * $Id: MenuLayer.cpp v 1.0 2015-01-22 12:05:31 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-03 10:47:00 $
+ * $Last modified: 2015-03-09 15:59:47 $
  * @brief
  *
  ******************************************************************/
@@ -22,10 +22,6 @@ ccColor3B playNormTextColor = ccc3(180, 180, 180);
 ccColor3B playSelectedTextColor = ccc3(255, 255, 255);
 
 CCSize menuSize;
-ccColor4F menuNormColor = ccc4f(0.7, 0.7, 0.7, 1.0);
-ccColor4F menuSelectedColor = ccc4f(0.55, 0.55, 0.55, 1.0);
-ccColor3B menuNormTextColor = ccc3(127, 127, 127);
-ccColor3B menuSelectedTextColor = ccc3(255, 255, 255);
 
 bool MenuLayer::init() {
     if (!CCLayerColor::initWithColor(ccc4(255, 255, 255, 255))) {

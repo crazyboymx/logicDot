@@ -50,6 +50,8 @@ private:
     void initDotNodes();
     CCNode* createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light);
 
+    void winGame();
+
     int inline index(int row, int col) {
         if (mPuzzle == NULL) {
             return 0;

@@ -4,7 +4,7 @@
  * @File: Util.h
  * $Id: Util.h v 1.0 2015-01-23 17:54:27 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-03 10:55:03 $
+ * $Last modified: 2015-03-09 15:59:35 $
  * @brief
  *
  ******************************************************************/
@@ -53,6 +53,11 @@ extern ColorSpace Orange;
 extern ColorSpace Orange1;
 extern ColorSpace Green;
 extern ColorSpace Blue;
+
+extern ccColor4F menuNormColor;
+extern ccColor4F menuSelectedColor;
+extern ccColor3B menuNormTextColor;
+extern ccColor3B menuSelectedTextColor;
 
 CCNode* createRectNode(float width, float height, ccColor4F fillColor);
 CCNode* createRoundRectNode(float width, float height, float radius, ccColor4F fillColor);
