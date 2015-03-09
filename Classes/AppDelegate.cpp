@@ -3,8 +3,22 @@
 #include "GameLayer.h"
 #include <vector>
 #include <algorithm>
+#include "Data.h"
 
 USING_NS_CC;
+
+void generatePuzzles() {
+    for (int i = 0; i < levelData.count; i++) {
+        int dotCount = 0;
+        for (int j = 0; j < levelData.stages[i].count; j++) {
+            int size = levelData.stages[i].puzzleSize;
+            Puzzle* p = Puzzle::generate(size, size);
+            dotCount += p->solution.dots;
+            CCLOG("==%d==, ===%s===", size, p->toString().c_str());
+        }
+        CCLOG("==stage %d, dotcount: %d", i+1, dotCount);
+    }
+}
 
 void updateDesignResolutionSize() {
     CCSize screenSize = CCEGLView::sharedOpenGLView()->getFrameSize();
@@ -75,7 +89,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // create a scene. it's an autorelease object
     CCScene *pScene = CCScene::create();
     GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::generate(4, 4), Red);
+    gl->initWithPuzzle(Puzzle::load(levelData.stages[3].puzzles[4]), Red);
     pScene->addChild(gl);
 
     // run
