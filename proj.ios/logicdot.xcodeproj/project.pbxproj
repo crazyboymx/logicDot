@@ -237,6 +237,8 @@
 		4BA31DD31A7DFE2900609C57 /* StageLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DCF1A7DFE2900609C57 /* StageLayer.cpp */; };
 		4BA31DF21A7E238100609C57 /* DotNode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4BA31DF01A7E238100609C57 /* DotNode.cpp */; };
 		7855E0E1153FEF240059DD9A /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7855E0DF153FEF240059DD9A /* Default.png */; };
+		88A75A091AADD3B400DAD34E /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A75A051AADD3B400DAD34E /* Data.cpp */; };
+		88A75A0A1AADD3B400DAD34E /* WinLayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 88A75A071AADD3B400DAD34E /* WinLayer.cpp */; };
 		BF171245129291EC00B8313A /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB012928DE900B8313A /* OpenGLES.framework */; };
 		BF1712461292920000B8313A /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB212928DE900B8313A /* libxml2.dylib */; };
 		BF1712471292920000B8313A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = BF170DB412928DE900B8313A /* libz.dylib */; };
@@ -742,6 +744,10 @@
 		4BA31DF01A7E238100609C57 /* DotNode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DotNode.cpp; path = ../Classes/DotNode.cpp; sourceTree = "<group>"; };
 		4BA31DF11A7E238100609C57 /* DotNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DotNode.h; path = ../Classes/DotNode.h; sourceTree = "<group>"; };
 		7855E0DF153FEF240059DD9A /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = SOURCE_ROOT; };
+		88A75A051AADD3B400DAD34E /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Data.cpp; path = ../Classes/Data.cpp; sourceTree = "<group>"; };
+		88A75A061AADD3B400DAD34E /* Data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Data.h; path = ../Classes/Data.h; sourceTree = "<group>"; };
+		88A75A071AADD3B400DAD34E /* WinLayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WinLayer.cpp; path = ../Classes/WinLayer.cpp; sourceTree = "<group>"; };
+		88A75A081AADD3B400DAD34E /* WinLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WinLayer.h; path = ../Classes/WinLayer.h; sourceTree = "<group>"; };
 		BF170DB012928DE900B8313A /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		BF170DB212928DE900B8313A /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		BF170DB412928DE900B8313A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1276,6 +1282,10 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				88A75A051AADD3B400DAD34E /* Data.cpp */,
+				88A75A061AADD3B400DAD34E /* Data.h */,
+				88A75A071AADD3B400DAD34E /* WinLayer.cpp */,
+				88A75A081AADD3B400DAD34E /* WinLayer.h */,
 				4BA31DF01A7E238100609C57 /* DotNode.cpp */,
 				4BA31DF11A7E238100609C57 /* DotNode.h */,
 				4BA31DCB1A7DFE2900609C57 /* GameLayer.cpp */,
@@ -1860,6 +1870,7 @@
 				15A3D90F1682F7D5002FB0C5 /* b2StackAllocator.cpp in Sources */,
 				15A3D9101682F7D5002FB0C5 /* b2Timer.cpp in Sources */,
 				15A3D9111682F7D5002FB0C5 /* b2Body.cpp in Sources */,
+				88A75A091AADD3B400DAD34E /* Data.cpp in Sources */,
 				15A3D9121682F7D5002FB0C5 /* b2ContactManager.cpp in Sources */,
 				15A3D9131682F7D5002FB0C5 /* b2Fixture.cpp in Sources */,
 				15A3D9141682F7D5002FB0C5 /* b2Island.cpp in Sources */,
@@ -1983,6 +1994,7 @@
 				1A8F3B74175E05DA00049216 /* AttachmentLoader.cpp in Sources */,
 				1A8F3B75175E05DA00049216 /* Bone.cpp in Sources */,
 				1A8F3B76175E05DA00049216 /* BoneData.cpp in Sources */,
+				88A75A0A1AADD3B400DAD34E /* WinLayer.cpp in Sources */,
 				1A8F3B77175E05DA00049216 /* CCSkeleton.cpp in Sources */,
 				1A8F3B78175E05DA00049216 /* CCSkeletonAnimation.cpp in Sources */,
 				1A8F3B79175E05DA00049216 /* extension.cpp in Sources */,

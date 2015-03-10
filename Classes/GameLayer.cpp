@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 18:08:12 $
+ * $Last modified: 2015-03-09 23:24:34 $
  * @brief
  *
  ******************************************************************/
@@ -57,7 +57,9 @@ void GameLayer::initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs) {
     initShapes();
     initDotNodes();
     initMenus();
-    updateShapes();
+    updateDotStatus();
+    puzzle->print();
+    updateStatus();
     this->setTouchEnabled(true);
 }
 
@@ -235,6 +237,11 @@ void GameLayer::updateShapes() {
 
 bool GameLayer::setDotStatus(int row, int col, Status status) {
     mPuzzle->setStatus(row, col, status);
+    updateDotStatus(row, col);
+    return status == mPuzzle->cells[row][col].status;
+}
+
+void GameLayer::updateDotStatus(int row, int col) {
     mDotNodeList[index(row, col)]->setStatus(mPuzzle->cells[row][col].status, mPuzzle->cells[row][col].flag);
     if (col - 1 >= 0) {
         mDotNodeList[index(row, col - 1)]->setStatus(mPuzzle->cells[row][col - 1].status, mPuzzle->cells[row][col - 1].flag);
@@ -248,7 +255,14 @@ bool GameLayer::setDotStatus(int row, int col, Status status) {
     if (row - 1 >= 0) {
         mDotNodeList[index(row - 1, col)]->setStatus(mPuzzle->cells[row - 1][col].status, mPuzzle->cells[row - 1][col].flag);
     }
-    return status == mPuzzle->cells[row][col].status;
+}
+
+void GameLayer::updateDotStatus() {
+    for (int i = 0; i < mPuzzle->row.size(); i++) {
+        for (int j = 0; j < mPuzzle->column.size(); j++) {
+            updateDotStatus(i, j);
+        }
+    }
 }
 
 void GameLayer::touchOnBoard(int row, int col) {

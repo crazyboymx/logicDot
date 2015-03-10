@@ -4,7 +4,7 @@
  * @File: LogicDot.cpp
  * $Id: LogicDot.cpp v 1.0 2015-01-20 20:10:39 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-02 21:37:12 $
+ * $Last modified: 2015-03-09 23:00:42 $
  * @brief
  *
  ******************************************************************/
@@ -24,11 +24,6 @@ int myrandom(int i) {
 }
 
 int random(int min, int max) {
-    static int initRand = 0;
-    if (initRand == 0) {
-        srand((unsigned)time(NULL));
-        initRand ++;
-    }
     if (min >= max) {
         return min;
     }
@@ -52,6 +47,16 @@ bool Puzzle::isWin() const {
             return false;
         }
     }
+    for (int i = 0; i < row.size(); ++ i) {
+        if (this->row[i] != 0) {
+            return false;
+        }
+    }
+    for (int i = 0; i < column.size(); ++ i) {
+        if (this->column[i] != 0) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -62,7 +67,6 @@ Puzzle* Puzzle::generate(int width, int height) {
     for (int i = 0; i < max; i++) {
         candidate.push_back(i);
     }
-    std::srand(unsigned(std::time(0)));
     while(!p->valid()) {
         int squar = width * height;
         p->solution.dots = random(squar / 4 - width / 4, squar / 4 + width);
@@ -75,6 +79,8 @@ Puzzle* Puzzle::generate(int width, int height) {
             int col = idx % width;
             if (p->putDotToHint(row, col)) {
                 dots --;
+                p->solution.row[row] ++;
+                p->solution.column[col] ++;
             }
             i++;
         }
@@ -111,6 +117,8 @@ void Puzzle::clear() {
     solution.dots = 0;
     for (int i = 0; i < solution.shapes.size(); i++) {
         solution.shapes[i] = 0;
+        solution.row[i] = 0;
+        solution.column[i] = 0;
     }
     for (int i = 0; i < size.height; i ++) {
         for (int j = 0; j < size.width; j ++) {
@@ -157,7 +165,7 @@ void Puzzle::updateFlag(int row, int col) {
         else {
             c.flag |= (isDot(c.status) && isDot(cells[row][col - 1].status) ? LEFT : 0x0);
         }
-        if ((c.flag & LEFT || c.flag & HINT_LEFT) && !isHint(cells[row][col - 1].status)) {
+        if ((c.flag & LEFT) && !isHint(cells[row][col - 1].status)) {
             cells[row][col - 1].flag |= RIGHT;
         }
         if (!(c.flag & LEFT || c.flag & HINT_LEFT) && !isHint(cells[row][col - 1].status) && isDot(cells[row][col - 1].status)) {
@@ -172,7 +180,7 @@ void Puzzle::updateFlag(int row, int col) {
         else {
             c.flag |= (isDot(c.status) && isDot(cells[row + 1][col].status) ? UP : 0x0);
         }
-        if ((c.flag & UP || c.flag & HINT_UP) && !isHint(cells[row + 1][col].status)) {
+        if ((c.flag & UP) && !isHint(cells[row + 1][col].status)) {
             cells[row + 1][col].flag |= DOWN;
         }
         if (!(c.flag & UP || c.flag & HINT_UP) && !isHint(cells[row + 1][col].status) && isDot(cells[row + 1][col].status)) {
@@ -187,7 +195,7 @@ void Puzzle::updateFlag(int row, int col) {
         else {
             c.flag |= (isDot(c.status) && isDot(cells[row][col + 1].status) ? RIGHT : 0x0);
         }
-        if ((c.flag & RIGHT || c.flag & HINT_RIGHT) && !isHint(cells[row][col + 1].status)) {
+        if ((c.flag & RIGHT) && !isHint(cells[row][col + 1].status)) {
             cells[row][col + 1].flag |= LEFT;
         }
         if (!(c.flag & RIGHT || c.flag & HINT_RIGHT) && !isHint(cells[row][col + 1].status) && isDot(cells[row][col + 1].status)) {
@@ -202,11 +210,44 @@ void Puzzle::updateFlag(int row, int col) {
         else {
             c.flag |= (isDot(c.status) && isDot(cells[row - 1][col].status) ? DOWN : 0x0);
         }
-        if ((c.flag & DOWN || c.flag & HINT_DOWN) && !isHint(cells[row - 1][col].status)) {
+        if ((c.flag & DOWN) && !isHint(cells[row - 1][col].status)) {
             cells[row - 1][col].flag |= UP;
         }
         if (!(c.flag & DOWN || c.flag & HINT_DOWN) && !isHint(cells[row - 1][col].status) && isDot(cells[row - 1][col].status)) {
             cells[row - 1][col].flag &= ~UP;
+        }
+    }
+}
+
+void Puzzle::useHint(int count) {
+    std::vector<int> unknownList;
+    std::vector<int> knownList;
+    int rowSize = row.size();
+    int colSize = column.size();
+    for (int i = 0; i < rowSize; i++) {
+        for (int j = 0; j < colSize; j++) {
+            if (cells[i][j].status == UNKNOWN) {
+                unknownList.push_back(i * colSize + j);
+            }
+            else if (isHint(cells[i][j].status) == false) {
+                knownList.push_back(i * colSize + j);
+            }
+        }
+    }
+    std::random_shuffle(unknownList.begin(), unknownList.end(), myrandom);
+    for (int i = 0; i < unknownList.size(); i++) {
+        setStatus(unknownList[i] / colSize, unknownList[i] % colSize, cells[unknownList[i] / colSize][unknownList[i] % colSize].hint);
+        count --;
+        if (count <= 0) {
+            return;
+        }
+    }
+    std::random_shuffle(knownList.begin(), knownList.end(), myrandom);
+    for (int i = 0; i < knownList.size(); i++) {
+        setStatus(knownList[i] / colSize, knownList[i] % colSize, cells[knownList[i] / colSize][knownList[i] % colSize].hint);
+        count --;
+        if (count <= 0) {
+            return;
         }
     }
 }
@@ -253,10 +294,13 @@ Puzzle* Puzzle::load(const std::string &str) {
                 p->row[i] ++;
                 p->column[j] ++;
                 p->solution.dots++;
+                p->solution.row[i]++;
+                p->solution.column[j]++;
             }
         }
     }
     p->fillHint();
+    p->solution.shapes = p->calcShapes(true);
     return p;
 }
 
@@ -299,6 +343,7 @@ void Puzzle::print() const {
 }
 
 void Puzzle::init() {
+    cells.clear();
     for (int j = 0; j < size.height; j++) {
         cells.push_back(std::vector<Cell>());
         for (int i = 0; i < size.width; i++) {
@@ -311,30 +356,17 @@ void Puzzle::init() {
         shapes.push_back(0);
     }
 
+    row.clear();
     for (int i = 0; i < size.height; i++) {
         row.push_back(0);
     }
+    column.clear();
     for (int i = 0; i < size.width; i++) {
         column.push_back(0);
     }
 }
 
 bool Puzzle::putDotToHint(int row, int col) {
-    /*int grid[3][3];
-    for (int i = 0; i < 3; i ++) {
-        for (int j = 0; j < 3; j++) {
-            grid[i][j] = (row - 1 + i < 0 || col - 1 + j < 0 || row -1 + i >= p.size.height || col - 1 + j >= p.size.width) ? UNKNOWN : p.cells[row - 1 + i][col - 1 + j].hint;
-        }
-    }
-    if (grid[1][1] == DOT || grid[0][0] == DOT || grid[0][2] == DOT || grid[2][0] == DOT || grid[2][2] == DOT) {
-        return false;
-    }
-    if ((grid[0][1] == DOT && (grid[0][0] == DOT || grid[0][2] == DOT || grid[1][0] == DOT || grid[1][2] == DOT)) ||
-        (grid[1][0] == DOT && (grid[0][0] == DOT || grid[2][0] == DOT || grid[0][1] == DOT || grid[2][1] == DOT)) ||
-        (grid[2][1] == DOT && (grid[2][0] == DOT || grid[2][2] == DOT || grid[1][0] == DOT || grid[1][2] == DOT)) ||
-        (grid[1][2] == DOT && (grid[0][2] == DOT || grid[2][2] == DOT || grid[0][1] == DOT || grid[2][1] == DOT))) {
-        return false;
-    }*/
     if (canPutDot(row, col, true) == false) {
         return false;
     }

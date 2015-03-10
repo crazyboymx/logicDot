@@ -1,9 +1,10 @@
 #include "AppDelegate.h"
 #include "MenuLayer.h"
 #include "GameLayer.h"
+#include "Data.h"
 #include <vector>
 #include <algorithm>
-#include "Data.h"
+#include <ctime>
 
 USING_NS_CC;
 
@@ -77,6 +78,7 @@ AppDelegate::~AppDelegate() {
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
+    std::srand(unsigned(std::time(0)));
     // initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
@@ -86,10 +88,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setAnimationInterval(1.0 / 60);
     updateDesignResolutionSize();
 
+    //generatePuzzles();
     // create a scene. it's an autorelease object
     CCScene *pScene = CCScene::create();
     GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::load(levelData.stages[3].puzzles[4]), Red);
+    gl->initWithPuzzle(Puzzle::load(levelData.stages[3].puzzles[3]), Red);
     pScene->addChild(gl);
 
     // run

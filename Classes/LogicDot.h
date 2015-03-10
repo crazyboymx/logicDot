@@ -4,7 +4,7 @@
  * @File: LogicDot.h
  * $Id: LogicDot.h v 1.0 2015-01-22 11:34:29 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-13 18:13:39 $
+ * $Last modified: 2015-03-09 21:45:45 $
  * @brief
  *
  ******************************************************************/
@@ -79,16 +79,22 @@ enum Shapes {
     EIGHT,
     NINE,
     TEN,
+    ELEVEN,
+    TWELVE,
     MAX_SHAPE,
 };
 
 struct Solution {
+    std::vector<int> row;
+    std::vector<int> column;
     std::vector<int> shapes;
     int dots;
 
     Solution() {
         for (int i = ZERO; i < MAX_SHAPE; i++) {
             shapes.push_back(0);
+            row.push_back(0);
+            column.push_back(0);
         }
         dots = 0;
     }
@@ -112,6 +118,7 @@ public:
     void setStatus(int row, int col, Status status);
     bool canPutDot(int row, int col, bool hint = false) const;
     void updateFlag(int row, int col);
+    void useHint(int count);
 
     std::string toString();
     static Puzzle* load(const std::string &str);

@@ -60,6 +60,8 @@ private:
         return row * mPuzzle->size.height + col;
     }
     bool setDotStatus(int row, int col, Status status);
+    void updateDotStatus(int row, int col);
+    void updateDotStatus();
 
     ColorSpace mCs;
     Puzzle* mPuzzle;
