@@ -4,12 +4,15 @@
  * @File: Data.cpp
  * $Id: Data.cpp v 1.0 2015-03-09 17:40:56 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 23:11:54 $
+ * $Last modified: 2015-03-10 23:12:42 $
  * @brief
  *
  ******************************************************************/
 
 #include "Data.h"
+#include <cocos2d.h>
+
+USING_NS_CC;
 
 std::string puzzles1[] = {
     "4,4,1010000000011000",
@@ -296,4 +299,66 @@ StageData stages[] = {
     {9, 12, 30, 1187,  puzzles9},
 };
 
-LevelData levelData = {9, 5328, stages};
+PuzzleData puzzleData = {9, 5328, stages};
+
+PlayerData playerData = {
+    0, 0, 0, 0, 0,
+};
+
+#define DATA_KEY_HASPLAYED      "hp"
+#define DATA_KEY_CURRSTAGE      "cs"
+#define DATA_KEY_LASTSTAGE      "ls"
+#define DATA_KEY_CURRLEVEL      "cl"
+#define DATA_KEY_LASTLEVEL      "ll"
+
+void loadPlayerData() {
+    CCUserDefault* ud = CCUserDefault::sharedUserDefault();
+    playerData.hasPlayed = ud->getBoolForKey(DATA_KEY_HASPLAYED);
+    if (playerData.hasPlayed == false) {
+        playerData.hasPlayed = true;
+        savePlayerData();
+        return;
+    }
+    playerData.currentStage = ud->getIntegerForKey(DATA_KEY_CURRSTAGE);
+    playerData.lastStage = ud->getIntegerForKey(DATA_KEY_LASTSTAGE);
+    playerData.currentLevel = ud->getIntegerForKey(DATA_KEY_CURRLEVEL);
+    playerData.lastLevel = ud->getIntegerForKey(DATA_KEY_LASTLEVEL);
+}
+
+void savePlayerData() {
+    CCUserDefault* ud = CCUserDefault::sharedUserDefault();
+    ud->setBoolForKey(DATA_KEY_HASPLAYED, playerData.hasPlayed);
+    ud->setIntegerForKey(DATA_KEY_CURRSTAGE, playerData.currentStage);
+    ud->setIntegerForKey(DATA_KEY_LASTSTAGE, playerData.lastStage);
+    ud->setIntegerForKey(DATA_KEY_CURRLEVEL, playerData.currentLevel);
+    ud->setIntegerForKey(DATA_KEY_LASTLEVEL, playerData.lastLevel);
+    ud->flush();
+}
+
+void nextLevel() {
+    playerData.currentLevel ++;
+    if (playerData.currentLevel >= puzzleData.stages[playerData.currentStage].count) {
+        playerData.currentLevel = 0;
+        playerData.currentStage ++;
+        if (playerData.currentStage >= puzzleData.count) {
+            playerData.currentStage --;
+            playerData.currentLevel = puzzleData.stages[playerData.currentStage].count - 1;
+        }
+    }
+    if (playerData.currentStage > playerData.lastStage) {
+        playerData.lastStage = playerData.currentStage;
+        playerData.lastLevel = playerData.currentLevel;
+    }
+    if (playerData.currentLevel > playerData.lastLevel) {
+        playerData.lastLevel = playerData.currentLevel;
+    }
+    savePlayerData();
+}
+
+bool endLevelOfStage() {
+    return playerData.currentLevel + 1 >= puzzleData.stages[playerData.currentStage].count;
+}
+
+bool endStage() {
+    return playerData.currentStage + 1 >= puzzleData.count;
+}

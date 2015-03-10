@@ -9,10 +9,10 @@
 USING_NS_CC;
 
 void generatePuzzles() {
-    for (int i = 0; i < levelData.count; i++) {
+    for (int i = 0; i < puzzleData.count; i++) {
         int dotCount = 0;
-        for (int j = 0; j < levelData.stages[i].count; j++) {
-            int size = levelData.stages[i].puzzleSize;
+        for (int j = 0; j < puzzleData.stages[i].count; j++) {
+            int size = puzzleData.stages[i].puzzleSize;
             Puzzle* p = Puzzle::generate(size, size);
             dotCount += p->solution.dots;
             CCLOG("==%d==, ===%s===", size, p->toString().c_str());
@@ -88,12 +88,12 @@ bool AppDelegate::applicationDidFinishLaunching() {
     pDirector->setAnimationInterval(1.0 / 60);
     updateDesignResolutionSize();
 
-    //generatePuzzles();
+    loadPlayerData();
+
     // create a scene. it's an autorelease object
     CCScene *pScene = CCScene::create();
-    GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::load(levelData.stages[3].puzzles[3]), Red);
-    pScene->addChild(gl);
+    MenuLayer* layer = MenuLayer::create();
+    pScene->addChild(layer);
 
     // run
     pDirector->runWithScene(pScene);

@@ -4,7 +4,7 @@
  * @File: Util.h
  * $Id: Util.h v 1.0 2015-01-23 17:54:27 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 15:59:35 $
+ * $Last modified: 2015-03-10 23:03:33 $
  * @brief
  *
  ******************************************************************/
@@ -12,6 +12,7 @@
 #ifndef _UTIL_H_
 #define _UTIL_H_
 
+#include "Data.h"
 #include <cocos2d.h>
 #include <string>
 #include <sstream>

@@ -4,7 +4,7 @@
  * @File: GameLayer.h
  * $Id: GameLayer.h v 1.0 2015-01-27 07:59:45 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 17:11:45 $
+ * $Last modified: 2015-03-10 20:33:39 $
  * @brief
  *
  ******************************************************************/
@@ -44,6 +44,12 @@ public:
     void initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs);
     void registerWithTouchDispatcher();
 
+    void menuPushCallback(CCObject* pSender);
+    void menuPopCallback(CCObject* pSender);
+    void menuRankCallback(CCObject* pSender);
+    void menuHintCallback(CCObject* pSender);
+    void menuRestartCallback(CCObject* pSender);
+    void menuPauseCallback(CCObject* pSender);
 private:
     void initTitle();
     void initShapes();
@@ -74,6 +80,13 @@ private:
     CCNode* mShapesBg;
     std::map<int, CCNode*> mShapesList;
     std::map<int, CCNode*> mMatchedShapesList;
+
+    CCMenuItem* mPush;
+    CCMenuItem* mPop;
+    CCMenuItem* mRank;
+    CCMenuItem* mHint;
+    CCMenuItem* mRestart;
+    CCMenuItem* mPause;
 
     Status mStatusInDrag;
     double mLastTouchTime;

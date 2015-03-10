@@ -4,7 +4,7 @@
  * @File: WinLayer.cpp
  * $Id: WinLayer.cpp v 1.0 2015-03-09 12:00:21 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 16:33:53 $
+ * $Last modified: 2015-03-10 23:55:11 $
  * @brief
  *
  ******************************************************************/
@@ -79,9 +79,23 @@ void WinLayer::init(int score, int size, int level) {
 }
 
 void WinLayer::menuNextLevelCallback(CCObject* pSender) {
-    CCLOG("menuNextLevelCallback");
+    if (endStage() && endLevelOfStage()) {
+    }
+    else {
+        nextLevel();
+        CCScene *pScene = CCScene::create();
+        GameLayer* gl = GameLayer::create();
+        gl->initWithPuzzle(Puzzle::load(puzzleData.stages[playerData.currentStage].puzzles[playerData.currentLevel]), Red);
+        pScene->addChild(gl);
+        CCDirector::sharedDirector()->replaceScene(pScene);
+    }
 }
 
 void WinLayer::menuBackToMenuLayerCallback(CCObject* pSender) {
-    CCLOG("menuBackToMenuLayerCallback");
+    CCScene *pScene = CCScene::create();
+    StageLayer* sl = StageLayer::create();
+    StageConfig config = {30, Red, "5X5 Packer"};
+    sl->initWithConfig(config);
+    pScene->addChild(sl);
+    CCDirector::sharedDirector()->replaceScene(pScene);
 }

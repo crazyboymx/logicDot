@@ -4,7 +4,7 @@
  * @File: StageLayer.cpp
  * $Id: StageLayer.cpp v 1.0 2015-01-27 07:59:26 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-03 11:07:41 $
+ * $Last modified: 2015-03-10 23:53:57 $
  * @brief
  *
  ******************************************************************/
@@ -106,9 +106,11 @@ void StageLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
 void StageLayer::ccTouchEnded(CCTouch* touch, CCEvent* event) {
     CCPoint location = touch->getLocation();
 
-    /*GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::generate(5, 5), mConfig.cs);
-    this->addChild(gl);*/
+    CCScene *pScene = CCScene::create();
+    GameLayer* gl = GameLayer::create();
+    gl->initWithPuzzle(Puzzle::load(puzzleData.stages[playerData.currentStage].puzzles[playerData.currentLevel]), Red);
+    pScene->addChild(gl);
+    CCDirector::sharedDirector()->replaceScene(pScene);
 }
 
 void StageLayer::menuMenuCallback(CCObject* pSender) {

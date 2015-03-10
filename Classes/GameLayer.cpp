@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 23:24:34 $
+ * $Last modified: 2015-03-10 21:30:05 $
  * @brief
  *
  ******************************************************************/
@@ -50,8 +50,8 @@ void GameLayer::initWithConfig(const GameConfig& config, const ColorSpace& cs) {
 }
 
 void GameLayer::initWithPuzzle(Puzzle* puzzle, const ColorSpace& cs) {
+    this->removeAllChildren();
     mPuzzle = puzzle;
-    mPuzzle->print();
     mCs = cs;
     initTitle();
     initShapes();
@@ -172,6 +172,85 @@ void GameLayer::initDotNodes() {
 }
 
 void GameLayer::initMenus() {
+    CCSize winSize = screenSize();
+    float menuHeight = 64.0f;
+    float menuWidth = winSize.width / 5;
+    ccColor4F normColor = ccc4f(0.15, 0.15, 0.15, 1.0);
+    ccColor4F selColor = ccc4f(0.35, 0.35, 0.35, 1.0);
+
+    CCNode* norm = createRectNode(menuWidth, menuHeight, normColor);
+    CCNode* sel = createRectNode(menuWidth, menuHeight, selColor);
+    CCSprite* normSprite = CCSprite::create("1.png");
+    CCSprite* selSprite = CCSprite::create("1.png");
+    normSprite->setPosition(ccp(norm->getContentSize().width * 0.5, norm->getContentSize().height * 0.5));
+    selSprite->setPosition(ccp(sel->getContentSize().width * 0.5, sel->getContentSize().height * 0.5));
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mPush = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuPushCallback));
+    mPush->setAnchorPoint(ccp(0.5, 0));
+    mPush->setPosition(ccp(menuWidth * -2, 0));
+
+    norm = createRectNode(menuWidth, menuHeight, normColor);
+    sel = createRectNode(menuWidth, menuHeight, selColor);
+    normSprite = CCSprite::create("2.png");
+    selSprite = CCSprite::create("2.png");
+    normSprite->setPosition(ccp(norm->getContentSize().width * 0.5, norm->getContentSize().height * 0.5));
+    selSprite->setPosition(ccp(sel->getContentSize().width * 0.5, sel->getContentSize().height * 0.5));
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mPop = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuPopCallback));
+    mPop->setAnchorPoint(ccp(0.5, 0));
+    mPop->setPosition(ccp(menuWidth * -1, 0));
+
+    norm = createRectNode(menuWidth, menuHeight, normColor);
+    sel = createRectNode(menuWidth, menuHeight, selColor);
+    normSprite = CCSprite::create("3.png");
+    selSprite = CCSprite::create("3.png");
+    normSprite->setPosition(ccp(norm->getContentSize().width * 0.5, norm->getContentSize().height * 0.5));
+    selSprite->setPosition(ccp(sel->getContentSize().width * 0.5, sel->getContentSize().height * 0.5));
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mRank = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuRankCallback));
+    mRank->setAnchorPoint(ccp(0.5, 0));
+    mRank->setPosition(ccp(menuWidth * 0, 0));
+
+    norm = createRectNode(menuWidth, menuHeight, normColor);
+    sel = createRectNode(menuWidth, menuHeight, selColor);
+    normSprite = CCSprite::create("4.png");
+    selSprite = CCSprite::create("4.png");
+    normSprite->setPosition(ccp(norm->getContentSize().width * 0.5, norm->getContentSize().height * 0.5));
+    selSprite->setPosition(ccp(sel->getContentSize().width * 0.5, sel->getContentSize().height * 0.5));
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mHint = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuHintCallback));
+    mHint->setAnchorPoint(ccp(0.5, 0));
+    mHint->setPosition(ccp(menuWidth * 1, 0));
+
+    norm = createRectNode(menuWidth, menuHeight, normColor);
+    sel = createRectNode(menuWidth, menuHeight, selColor);
+    normSprite = CCSprite::create("5.png");
+    selSprite = CCSprite::create("5.png");
+    normSprite->setPosition(ccp(norm->getContentSize().width * 0.5, norm->getContentSize().height * 0.5));
+    selSprite->setPosition(ccp(sel->getContentSize().width * 0.5, sel->getContentSize().height * 0.5));
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mRestart = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuRestartCallback));
+    mRestart->setAnchorPoint(ccp(0.5, 0));
+    mRestart->setPosition(ccp(menuWidth * 2, 0));
+
+    CCMenu* pMenu = CCMenu::create(mPush, mPop, mRank, mHint, mRestart, NULL);
+    pMenu->setPosition(ccp(winSize.width * 0.5, 0));
+    this->addChild(pMenu);
+
+    /*norm = createRectNode(menuWidth, menuHeight, normColor);
+    sel = createRectNode(menuWidth, menuHeight, selColor);
+    normSprite = CCSprite::create("menu.png");
+    selSprite = CCSprite::create("menu.png");
+    norm->addChild(normSprite);
+    sel->addChild(selSprite);
+    mPush = CCMenuItemSprite::create(norm, sel, NULL, this, menu_selector(GameLayer::menuPushCallback));
+    mPush->setAnchorPoint(ccp(0.5, 0.5));
+    mPush->setPosition(ccp(menuWidth * 2, menuHeight * 0.5));*/
 }
 
 CCNode* GameLayer::createShape(int dotCount, float dotSize, ccColor4F dark, ccColor4F light) {
@@ -348,6 +427,24 @@ void GameLayer::ccTouchEnded(CCTouch* touch, CCEvent* event) {
     mLastTouchIndex = -1;
     //CCPoint location = touch->getLocation();
     //this->removeFromParent();
+}
+
+void GameLayer::menuPushCallback(CCObject* pSender) {
+}
+
+void GameLayer::menuPopCallback(CCObject* pSender) {
+}
+
+void GameLayer::menuRankCallback(CCObject* pSender) {
+}
+
+void GameLayer::menuHintCallback(CCObject* pSender) {
+}
+
+void GameLayer::menuRestartCallback(CCObject* pSender) {
+}
+
+void GameLayer::menuPauseCallback(CCObject* pSender) {
 }
 
 void GameLayer::registerWithTouchDispatcher() {
