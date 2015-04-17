@@ -4,7 +4,7 @@
  * @File: GameLayer.h
  * $Id: GameLayer.h v 1.0 2015-01-27 07:59:45 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-10 20:33:39 $
+ * $Last modified: 2015-04-16 00:13:12 $
  * @brief
  *
  ******************************************************************/
@@ -93,4 +93,5 @@ private:
     int mLastTouchIndex;
 };
 
+CCScene* createGameScene(Puzzle* puzzle, const ColorSpace& cs);
 #endif // _GAMELAYER_H_

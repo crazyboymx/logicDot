@@ -90,12 +90,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     loadPlayerData();
 
-    // create a scene. it's an autorelease object
-    CCScene *pScene = CCScene::create();
-    MenuLayer* layer = MenuLayer::create();
-    pScene->addChild(layer);
-
-    // run
+    CCScene *pScene = createMenuScene();
     pDirector->runWithScene(pScene);
 
     return true;

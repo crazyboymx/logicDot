@@ -4,7 +4,7 @@
  * @File: MenuLayer.cpp
  * $Id: MenuLayer.cpp v 1.0 2015-01-22 12:05:31 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 15:59:47 $
+ * $Last modified: 2015-04-16 00:31:19 $
  * @brief
  *
  ******************************************************************/
@@ -12,6 +12,11 @@
 #include "Util.h"
 #include "MenuLayer.h"
 #include "StageLayer.h"
+#include "Data.h"
+
+extern "C" {
+void rate();
+}
 
 USING_NS_CC;
 
@@ -106,10 +111,7 @@ void MenuLayer::onExit() {
 
 void MenuLayer::menuPlayCallback(CCObject* pSender) {
     CCLOG("menuPlayCallback");
-    StageLayer* sl = StageLayer::create();
-    StageConfig config = {30, Red, "5X5 Packer"};
-    sl->initWithConfig(config);
-    this->addChild(sl);
+    CCDirector::sharedDirector()->replaceScene(createStageScene());
 }
 
 void MenuLayer::menuSettingCallback(CCObject* pSender) {
@@ -122,5 +124,12 @@ void MenuLayer::menuHighScoreCallback(CCObject* pSender) {
 
 void MenuLayer::menuRateCallback(CCObject* pSender) {
     CCLOG("menuRateCallback");
+    rate();
 }
 
+CCScene* createMenuScene() {
+    CCScene *pScene = CCScene::create();
+    MenuLayer* layer = MenuLayer::create();
+    pScene->addChild(layer);
+    return pScene;
+}

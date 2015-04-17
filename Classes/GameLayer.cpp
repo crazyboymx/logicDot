@@ -4,7 +4,7 @@
  * @File: GameLayer.cpp
  * $Id: GameLayer.cpp v 1.0 2015-01-27 07:59:49 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-10 21:30:05 $
+ * $Last modified: 2015-04-16 09:44:04 $
  * @brief
  *
  ******************************************************************/
@@ -277,6 +277,7 @@ void GameLayer::winGame() {
     WinLayer* wl = WinLayer::create();
     CCLOG("winGame");
     this->addChild(wl);
+    nextLevel();
 }
 
 void GameLayer::updateStatus() {
@@ -449,4 +450,12 @@ void GameLayer::menuPauseCallback(CCObject* pSender) {
 
 void GameLayer::registerWithTouchDispatcher() {
     CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kTouchPriorityLayer, true);
+}
+
+CCScene* createGameScene(Puzzle* puzzle, const ColorSpace& cs) {
+    CCScene *pScene = CCScene::create();
+    GameLayer* gl = GameLayer::create();
+    gl->initWithPuzzle(puzzle, cs);
+    pScene->addChild(gl);
+    return pScene;
 }

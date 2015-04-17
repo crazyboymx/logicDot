@@ -4,7 +4,7 @@
  * @File: StageLayer.h
  * $Id: StageLayer.h v 1.0 2015-01-27 07:59:20 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-02-03 11:04:05 $
+ * $Last modified: 2015-04-16 01:23:33 $
  * @brief
  *
  ******************************************************************/
@@ -51,6 +51,33 @@ private:
 
     StageConfig mConfig;
     LevelNode** mLevelNodeList;
+    CCPoint mTouchBeginLoc;
 };
+
+class StageTouchLayer : public CCLayer {
+public:
+    CREATE_FUNC(StageTouchLayer);
+    virtual ~StageTouchLayer() {};
+
+    virtual bool init();
+    virtual bool ccTouchBegan(CCTouch* touch, CCEvent* event);
+    virtual void ccTouchMoved(CCTouch* touch, CCEvent* event);
+    virtual void ccTouchEnded(CCTouch* touch, CCEvent* event);
+    void registerWithTouchDispatcher();
+
+    void resetStageLayerPosition();
+    void onMoveEndCallback();
+public:
+    StageLayer* left;
+    StageLayer* middle;
+    StageLayer* right;
+private:
+    CCPoint mTouchBeginLoc;
+    CCPoint mTouchLastLoc;
+    float mPosx;
+};
+
+StageLayer* createStageLayer(const StageData& sd);
+CCScene* createStageScene();
 
 #endif // _STAGELAYER_H_

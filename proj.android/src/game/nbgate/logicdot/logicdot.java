@@ -27,11 +27,18 @@ import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
 
 import android.os.Bundle;
+import android.net.Uri;
+import android.content.Intent;
+import android.content.ActivityNotFoundException;
+import android.app.Activity;
+import android.content.Context;
 
 public class logicdot extends Cocos2dxActivity{
+	private static Activity activity2;
 	
     protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);	
+        activity2 = this;
 	}
 
     public Cocos2dxGLSurfaceView onCreateView() {
@@ -40,6 +47,15 @@ public class logicdot extends Cocos2dxActivity{
     	glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
     	
     	return glSurfaceView;
+    }
+
+    private static void rate() {
+        Uri uri = Uri.parse("market://details?id=" + getContext().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            activity2.startActivity(goToMarket);
+        } catch (ActivityNotFoundException e) {
+        }
     }
 
     static {

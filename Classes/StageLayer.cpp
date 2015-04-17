@@ -4,7 +4,7 @@
  * @File: StageLayer.cpp
  * $Id: StageLayer.cpp v 1.0 2015-01-27 07:59:26 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-10 23:53:57 $
+ * $Last modified: 2015-04-16 10:02:18 $
  * @brief
  *
  ******************************************************************/
@@ -12,7 +12,10 @@
 #include "Util.h"
 #include "StageLayer.h"
 #include "GameLayer.h"
+#include "MenuLayer.h"
+#include "Data.h"
 
+#define SPEED 0.0015625     // 0.5/320
 USING_NS_CC;
 
 StageLayer::~StageLayer() {
@@ -96,7 +99,13 @@ void StageLayer::initLevel() {
 
 bool StageLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
     CCPoint location = touch->getLocation();
-    return true;
+    mTouchBeginLoc = location;
+    for (int i = 0; i < mConfig.levelCount; i++) {
+        if (pointInNode(mLevelNodeList[i], location)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void StageLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
@@ -106,17 +115,152 @@ void StageLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
 void StageLayer::ccTouchEnded(CCTouch* touch, CCEvent* event) {
     CCPoint location = touch->getLocation();
 
-    CCScene *pScene = CCScene::create();
-    GameLayer* gl = GameLayer::create();
-    gl->initWithPuzzle(Puzzle::load(puzzleData.stages[playerData.currentStage].puzzles[playerData.currentLevel]), Red);
-    pScene->addChild(gl);
-    CCDirector::sharedDirector()->replaceScene(pScene);
+    if (moved(location, mTouchBeginLoc)) {
+        return;
+    }
+
+    for (int i = 0; i < mConfig.levelCount; i++) {
+        if (pointInNode(mLevelNodeList[i], location)) {
+            CCDirector::sharedDirector()->replaceScene(createGameScene(Puzzle::load(puzzleData.stages[playerData.currentStage].puzzles[i]), Red));
+            break;
+        }
+    }
 }
 
 void StageLayer::menuMenuCallback(CCObject* pSender) {
-    this->removeFromParent();
+    CCDirector::sharedDirector()->replaceScene(createMenuScene());
 }
 
 void StageLayer::registerWithTouchDispatcher() {
-    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kTouchPriorityLayer, true);
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kTouchPriorityLayer, false);
+}
+
+bool StageTouchLayer::init() {
+    if (!CCLayer::init()) {
+        return false;
+    }
+    left = NULL;
+    middle = NULL;
+    right = NULL;
+    this->setTouchEnabled(true);
+    return true;
+}
+
+bool StageTouchLayer::ccTouchBegan(CCTouch* touch, CCEvent* event) {
+    CCPoint location = touch->getLocation();
+    mTouchLastLoc = location;
+    mTouchBeginLoc = location;
+    return true;
+}
+
+void StageTouchLayer::ccTouchMoved(CCTouch* touch, CCEvent* event) {
+    CCPoint location = touch->getLocation();
+    if (moved(location, mTouchBeginLoc) == false) {
+        return;
+    }
+    float dx = location.x - mTouchLastLoc.x;
+    mTouchLastLoc = location;
+    if (dx < 0 && right != NULL || dx > 0 && left != NULL) {
+        this->setPositionX(this->getPositionX() + dx);
+    }
+}
+
+void StageTouchLayer::ccTouchEnded(CCTouch* touch, CCEvent* event) {
+    CCPoint location = touch->getLocation();
+    if (moved(location, mTouchBeginLoc) == false) {
+        return;
+    }
+
+    float x = this->getPositionX();
+    float half = screenSize().width / 2;
+    CCLOG("x: %0.2f, half:%0.2f, time: %0.2f", x, half, SPEED * (half*2 + x));
+    CCAction* callback = CCCallFunc::create(this, callfunc_selector(StageTouchLayer::onMoveEndCallback));
+    CCFiniteTimeAction* move = NULL;
+    if (x <= -half) {
+        move = CCEaseExponentialOut::create(CCMoveTo::create(SPEED * (half*2 + x), ccp(-screenSize().width, 0)));
+    }
+    else if (x < half) {
+        move = CCEaseExponentialOut::create(CCMoveTo::create(SPEED * abs(x), ccp(0, 0)));
+    }
+    else {
+        move = CCEaseExponentialOut::create(CCMoveTo::create(SPEED * (half*2 - x), ccp(screenSize().width, 0)));
+    }
+    this->runAction(CCSequence::create(move, callback, NULL));
+}
+
+void StageTouchLayer::onMoveEndCallback() {
+    float x = this->getPositionX();
+    float half = screenSize().width / 2;
+    if (x < -half) {
+        if (left != NULL) {
+            left->removeFromParent();
+        }
+        left = middle;
+        middle = right;
+        right = NULL;
+        playerData.currentStage += 1;
+        if (playerData.currentStage < puzzleData.count - 1) {
+            right = createStageLayer(puzzleData.stages[playerData.currentStage + 1]);
+            this->addChild(right);
+        }
+    }
+    else if (x > half) {
+        if (right != NULL) {
+            right->removeFromParent();
+        }
+        right = middle;
+        middle = left;
+        left = NULL;
+        playerData.currentStage -= 1;
+        if (playerData.currentStage > 0) {
+            left = createStageLayer(puzzleData.stages[playerData.currentStage - 1]);
+            this->addChild(left);
+        }
+    }
+    resetStageLayerPosition();
+}
+
+void StageTouchLayer::resetStageLayerPosition() {
+    this->setPosition(ccp(0, 0));
+    if (left != NULL) {
+        left->setPosition(ccp(-screenSize().width, 0));
+    }
+    middle->setPosition(ccp(0, 0));
+    if (right != NULL) {
+        right->setPosition(ccp(screenSize().width, 0));
+    }
+}
+
+void StageTouchLayer::registerWithTouchDispatcher() {
+    CCDirector::sharedDirector()->getTouchDispatcher()->addTargetedDelegate(this, kTouchPriorityLayer, false);
+}
+
+StageLayer* createStageLayer(const StageData& sd) {
+    std::string title = "";
+    title += number2string(sd.puzzleSize) + "X" + number2string(sd.puzzleSize) + " Packer";
+    StageConfig config = {sd.count, Red, title};
+    StageLayer* sl = StageLayer::create();
+    sl->initWithConfig(config);
+    return sl;
+}
+
+CCScene* createStageScene() {
+    CCScene* scene = CCScene::create();
+    StageTouchLayer* stl = StageTouchLayer::create();
+    scene->addChild(stl);
+    StageLayer* ls = createStageLayer(puzzleData.stages[playerData.currentStage]);
+    stl->addChild(ls);
+    stl->middle = ls;
+    if (playerData.currentStage > 0) {
+        StageLayer* left = createStageLayer(puzzleData.stages[playerData.currentStage - 1]);
+        stl->addChild(left);
+        stl->left = left;
+    }
+    if (playerData.currentStage < puzzleData.count - 1) {
+        StageLayer* right = createStageLayer(puzzleData.stages[playerData.currentStage + 1]);
+        stl->addChild(right);
+        stl->right = right;
+    }
+    stl->resetStageLayerPosition();
+    return scene;
 }

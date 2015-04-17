@@ -4,7 +4,7 @@
  * @File: Util.h
  * $Id: Util.h v 1.0 2015-01-23 17:54:27 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-10 23:03:33 $
+ * $Last modified: 2015-04-16 00:16:56 $
  * @brief
  *
  ******************************************************************/
@@ -65,6 +65,8 @@ CCNode* createRoundRectNode(float width, float height, float radius, ccColor4F f
 CCNode* createCircleNode(float radius, ccColor4F fillColor);
 
 bool pointInNode(CCNode* node, const CCPoint& worldPoint);
+float dist(const CCPoint& a, const CCPoint& b);
+bool moved(const CCPoint& start, const CCPoint& end);
 
 template<class type>
 std::string number2string(type n) {

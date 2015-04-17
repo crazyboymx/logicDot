@@ -4,7 +4,7 @@
  * @File: MenuLayer.h
  * $Id: MenuLayer.h v 1.0 2015-01-22 12:02:34 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-01-23 21:30:50 $
+ * $Last modified: 2015-04-16 00:30:52 $
  * @brief
  *
  ******************************************************************/
@@ -33,5 +33,7 @@ private:
     CCMenuItem* mHighScore;
     CCMenuItem* mRate;
 };
+
+CCScene* createMenuScene();
 
 #endif // _MENULAYER_H_

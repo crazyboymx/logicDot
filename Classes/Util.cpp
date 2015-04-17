@@ -4,7 +4,7 @@
  * @File: Util.cpp
  * $Id: Util.cpp v 1.0 2015-01-23 18:05:25 maxing $
  * $Author: maxing <xm.crazyboy@gmail.com> $
- * $Last modified: 2015-03-09 15:59:24 $
+ * $Last modified: 2015-04-16 00:18:27 $
  * @brief
  *
  ******************************************************************/
@@ -133,4 +133,12 @@ bool pointInNode(CCNode* node, const CCPoint& worldPoint) {
         p = node->getParent()->convertToNodeSpace(worldPoint);
     }
     return node->boundingBox().containsPoint(p);
+}
+
+float dist(const CCPoint& start, const CCPoint& end) {
+    return sqrt((start.x - end.x) * (start.x - end.x) + (start.y - end.y) * (start.y - end.y));
+}
+
+bool moved(const CCPoint& start, const CCPoint& end) {
+    return dist(start, end) > 2.0;
 }
